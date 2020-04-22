@@ -1,4 +1,4 @@
-package com.arb.movieguideapp;
+package com.arb.movieguideapp.ui;
 
 import android.os.Bundle;
 
@@ -7,6 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.arb.movieguideapp.models.Movie;
+import com.arb.movieguideapp.adapters.MovieAdapter;
+import com.arb.movieguideapp.R;
+import com.arb.movieguideapp.models.Slide;
+import com.arb.movieguideapp.adapters.SlidePagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;

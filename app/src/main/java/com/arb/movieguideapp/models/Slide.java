@@ -1,4 +1,4 @@
-package com.arb.movieguideapp;
+package com.arb.movieguideapp.models;
 
 public class Slide {
 
