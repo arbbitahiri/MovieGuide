@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
         //lista e fotove
         lstSlides = new ArrayList<>();
-        lstSlides.add(new Slide(R.drawable.z_inception321, "Slide Title \nmore text here"));
-        lstSlides.add(new Slide(R.drawable.z_out321, "Slide Title \nmore text here"));
-        lstSlides.add(new Slide(R.drawable.z_inception321, "Slide Title \nmore text here"));
-        lstSlides.add(new Slide(R.drawable.z_out321, "Slide Title \nmore text here"));
-        lstSlides.add(new Slide(R.drawable.z_inception321, "Slide Title \nmore text here"));
+        lstSlides.add(new Slide(R.drawable.z_inception321, "Inception \n8.8 IMDb | 87% Rotten Tomatoes"));
+        lstSlides.add(new Slide(R.drawable.z_out321, "Once Upon a Time in Hollywood \n7.7 IMDb | 85% Rotten Tomatoes"));
+        lstSlides.add(new Slide(R.drawable.z_inception321, "Inception \n8.8 IMDb | 87% Rotten Tomatoes"));
+        lstSlides.add(new Slide(R.drawable.z_out321, "Once Upon a Time in Hollywood \n7.7 IMDb | 85% Rotten Tomatoes"));
+        lstSlides.add(new Slide(R.drawable.z_inception321, "Inception \n8.8 IMDb | 87% Rotten Tomatoes"));
 
         SlidePagerAdapter adapter = new SlidePagerAdapter(this, lstSlides);
         slidePager.setAdapter(adapter);
