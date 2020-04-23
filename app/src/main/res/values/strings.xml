@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">MovieGuideApp</string>
     <string name="txtPopular">Best Popular Movies</string>
+    <string name="txtAction">Best Action Movies</string>
     <string name="interstellar">Interstellar</string>
-    <string name="release_date">October 26, 2014 (USA)</string>
-    <string name="ratings">8.6 IMDb | 72% Rotten Tomatoes</string>
-    <string name="movie_detail">In Earth\'s future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand (Michael Caine), a brilliant NASA physicist, is working on plans to save mankind by transporting Earth's population to a new home via a wormhole. But first, Brand must send former NASA pilot Cooper (Matthew McConaughey) and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind's new home.</string>
+    <string name="release_date_interstellar">October 26, 2014 (USA)</string>
+    <string name="ratings_interstellar">8.6 IMDb | 72% Rotten Tomatoes</string>
+    <string name="movie_detail_interstellar">In Earth\'s future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand (Michael Caine), a brilliant NASA physicist, is working on plans to save mankind by transporting Earth\'s population to a new home via a wormhole. But first, Brand must send former NASA pilot Cooper (Matthew McConaughey) and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind\'s new home.</string>
     <string name="cast">Cast</string>
     <string name="where_to_watch">Where To Watch</string>
 </resources>

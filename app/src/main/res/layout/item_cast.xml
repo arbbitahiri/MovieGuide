@@ -4,6 +4,7 @@
     android:layout_width="140dp"
     android:layout_height="190dp"
     android:id="@+id/img_cast"
-    android:layout_marginRight="8dp">
+    android:layout_marginRight="8dp"
+    android:scaleType="centerCrop">
 
 </ImageView>

@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.arb.movieguideapp.R;
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class SearchCategoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
+        setContentView(R.layout.activity_search_category);
     }
 }

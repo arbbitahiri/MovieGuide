@@ -18,15 +18,17 @@
         android:src="@drawable/ic_launcher_background" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/add_fav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:src="@drawable/ic_favorite_border_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/slide_img"
+        app:layout_constraintHorizontal_bias="0.932"
         app:layout_constraintStart_toStartOf="@+id/slide_img"
         app:layout_constraintTop_toTopOf="@+id/slide_img"
-        android:src="@drawable/ic_play_arrow_black_24dp" />
+        app:layout_constraintVertical_bias="0.543" />
 
     <ImageView
         android:id="@+id/imageView3"
