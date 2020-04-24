@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MovieGuideApp</string>
-    <string name="txtPopular">Best Popular Movies</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+    <string name="title_favourite">Favourite</string>
+    <string name="title_settings">Settings</string>
 </resources>
