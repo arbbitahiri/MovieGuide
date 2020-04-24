@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.SearchCategoryActivity"></activity>
+        <activity android:name=".ui.FavoriteActivity"></activity>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity android:name=".ui.SearchCategoryActivity" />
         <activity
             android:name=".ui.MovieDetailsActivity"
             android:parentActivityName=".ui.MainActivity" />
