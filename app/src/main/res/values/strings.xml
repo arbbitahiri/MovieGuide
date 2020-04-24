@@ -8,7 +8,6 @@
     <string name="movie_detail_interstellar">In Earth\'s future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand (Michael Caine), a brilliant NASA physicist, is working on plans to save mankind by transporting Earth\'s population to a new home via a wormhole. But first, Brand must send former NASA pilot Cooper (Matthew McConaughey) and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind\'s new home.</string>
     <string name="cast">Cast</string>
     <string name="where_to_watch">Where To Watch</string>
-    <string name="search">Search</string>
     <string name="action">Action</string>
     <string name="adventure">Adventure</string>
     <string name="comedies">Comedies</string>
@@ -19,4 +18,10 @@
     <string name="thriller">Thriller</string>
     <string name="documentaries">Documentaries</string>
     <string name="classics">Classics</string>
+    <string name="title_search">Search</string>
+    <string name="title_favorites">Favorites</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+
 </resources>
