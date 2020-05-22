@@ -1,11 +1,16 @@
 <resources>
-    <string name="app_name">MovieGuideApp</string>
+    <string name="app_name">Movie Guide</string>
     <string name="txtPopular">Best Popular Movies</string>
     <string name="txtAction">Best Action Movies</string>
     <string name="interstellar">Interstellar</string>
     <string name="release_date_interstellar">October 26, 2014 (USA)</string>
     <string name="ratings_interstellar">8.6 IMDb | 72% Rotten Tomatoes</string>
     <string name="movie_detail_interstellar">In Earth\'s future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand (Michael Caine), a brilliant NASA physicist, is working on plans to save mankind by transporting Earth\'s population to a new home via a wormhole. But first, Brand must send former NASA pilot Cooper (Matthew McConaughey) and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind\'s new home.</string>
+    <string name="movie_detail_avengers_endgame">Adrift in space with no food or water, Tony Stark sends a message to Pepper Potts as his oxygen supply starts to dwindle. Meanwhile, the remaining Avengers — Thor, Black Widow, Captain America and Bruce Banner — must figure out a way to bring back their vanquished allies for an epic showdown with Thanos — the evil demigod who decimated the planet and the universe.</string>
+    <string name="movie_detail_dark_knight">With the help of allies Lt. Jim Gordon (Gary Oldman) and DA Harvey Dent (Aaron Eckhart), Batman (Christian Bale) has been able to keep a tight lid on crime in Gotham City. But when a vile young criminal calling himself the Joker (Heath Ledger) suddenly throws the town into chaos, the caped Crusader begins to tread a fine line between heroism and vigilantism.</string>
+    <string name="movie_detail_inception">Dom Cobb (Leonardo DiCaprio) is a thief with the rare ability to enter people\'s dreams and steal their secrets from their subconscious. His skill has made him a hot commodity in the world of corporate espionage but has also cost him everything he loves. Cobb gets a chance at redemption when he is offered a seemingly impossible task: Plant an idea in someone\'s mind. If he succeeds, it will be the perfect crime, but a dangerous enemy anticipates Cobb\'s every move.</string>
+    <string name="movie_detail_zodiac">In the late 1960s and 1970s, fear grips the city of San Francisco as a serial killer called Zodiac stalks its residents. Investigators (Mark Ruffalo, Anthony Edwards) and reporters (Jake Gyllenhaal, Robert Downey Jr.) become obsessed with learning the killer\'s identity and bringing him to justice. Meanwhile, Zodiac claims victim after victim and taunts the authorities with cryptic messages, cyphers and menacing phone calls.</string>
+    <string name="movie_detail_irishman">In the 1950s, truck driver Frank Sheeran gets involved with Russell Bufalino and his Pennsylvania crime family. As Sheeran climbs the ranks to become a top hit man, he also goes to work for Jimmy Hoffa — a powerful Teamster tied to organized crime.</string>
     <string name="cast">Cast</string>
     <string name="where_to_watch">Where To Watch</string>
     <string name="action">Action</string>
@@ -24,5 +29,33 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="search">Search</string>
-
+    <string name="cast_desc">Cast</string>
+    <string name="movie">Movie</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="where_to_watch_title">Where to Watch</string>
+    <string name="where_to_watch_desc">Where to Watch</string>
+    <string name="movie_title_slide">Movie Title Slide</string>
+    <string name="gradient">Gradient</string>
+    <string name="slide_image">Slide Image</string>
+    <string name="year_genre_and_time">Year, Genre and Time</string>
+    <string name="ratings">Ratings</string>
+    <string name="search_bar">Search</string>
+    <string name="title_more">More</string>
+    <string name="movie_cover">Movie Cover</string>
+    <string name="trailers">Trailers</string>
+    <string name="search_movie">Search for a movie, genre etc.</string>
+    <string name="logo">Logo</string>
+    <string name="search_settings">Search settings</string>
+    <string name="search_for_movie">Search for movie</string>
+    <string name="app_settings">App Settings</string>
+    <string name="push_notification">Push Notification</string>
+    <string name="help">Help</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="about">About</string>
+    <string name="language">Language</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="update_password">Update Password</string>
+    <string name="cancel_account">Cancel Account</string>
+    <string name="feedback">Feedback</string>
+    <string name="search_for_a_movie">Search for a movie</string>
 </resources>

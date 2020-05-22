@@ -14,12 +14,12 @@ public class WhereToWatch {
         return title;
     }
 
-    public int getThumbnail() {
-        return thumbnail;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getThumbnail() {
+        return thumbnail;
     }
 
     public void setThumbnail(int thumbnail) {

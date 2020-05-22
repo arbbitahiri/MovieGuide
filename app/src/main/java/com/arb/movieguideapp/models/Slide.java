@@ -2,27 +2,42 @@ package com.arb.movieguideapp.models;
 
 public class Slide {
 
-    private int Image;
-    private String Title;
+    private String title;
+    private String ratings;
+    private int thumbnail;
 
-    public Slide(int image, String title){
-        Image = image;
-        Title = title;
+    public Slide(String title, int thumbnail) {
+        this.title = title;
+        this.thumbnail = thumbnail;
     }
 
-    public int getImage(){
-        return Image;
+    public Slide(String title, String ratings, int thumbnail) {
+        this.title = title;
+        this.ratings = ratings;
+        this.thumbnail = thumbnail;
     }
 
-    public String getTitle(){
-        return Title;
+    public String getRatings() {
+        return ratings;
     }
 
-    public void setImage(int image){
-        Image = image;
+    public void setRatings(String ratings) {
+        this.ratings = ratings;
     }
 
-    public void setTitle(String title){
-        Title = title;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(int thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

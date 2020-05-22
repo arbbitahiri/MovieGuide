@@ -2,27 +2,27 @@ package com.arb.movieguideapp.models;
 
 public class Cast {
 
-    private String name;
-    private int img_link;
+    private String title;
+    private int thumbnail;
 
-    public Cast(String name, int img_link) {
-        this.name = name;
-        this.img_link = img_link;
+    public Cast(String title, int thumbnail) {
+        this.title = title;
+        this.thumbnail = thumbnail;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public int getImg_link() {
-        return img_link;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getThumbnail() {
+        return thumbnail;
     }
 
-    public void setImg_link(int img_link) {
-        this.img_link = img_link;
+    public void setThumbnail(int thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }
