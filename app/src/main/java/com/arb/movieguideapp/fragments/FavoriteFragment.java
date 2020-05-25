@@ -19,12 +19,10 @@ import com.arb.movieguideapp.models.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class FavoriteFragment extends Fragment {
 
     private List<Movie> movieList = new ArrayList<>();
-    private RecyclerView rvFavorites;
     private FavoriteMovieAdapter favoriteMovieAdapter;
 
     @Nullable
@@ -37,14 +35,14 @@ public class FavoriteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        rvFavorites = view.findViewById(R.id.favorite_recycler);
-        favoriteMovieAdapter = new FavoriteMovieAdapter(movieList);
+        RecyclerView rvFavorites = view.findViewById(R.id.favorite_recycler);
+        favoriteMovieAdapter = new FavoriteMovieAdapter(getContext(), movieList);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvFavorites.setLayoutManager(layoutManager);
         rvFavorites.setItemAnimator(new DefaultItemAnimator());
 
-        rvFavorites.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), LinearLayoutManager.VERTICAL));
+        rvFavorites.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL));
 
         rvFavorites.setAdapter(favoriteMovieAdapter);
 

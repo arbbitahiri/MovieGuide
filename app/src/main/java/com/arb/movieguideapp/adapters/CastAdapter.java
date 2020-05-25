@@ -1,5 +1,6 @@
 package com.arb.movieguideapp.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.models.Cast;
+import com.squareup.picasso.Picasso;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class CastAdapter extends RecyclerView.Adapter<CastAdapter.MyViewHolder> {
 
+    private Context mContext;
     private List<Cast> mCast;
 
-    public CastAdapter(List<Cast> mCast) {
+    public CastAdapter(Context mContext, List<Cast> mCast) {
+        this.mContext = mContext;
         this.mCast = mCast;
     }
 
@@ -30,7 +35,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.imgCast.setImageResource(mCast.get(i).getThumbnail());
+        Picasso.get().load(mCast.get(i).getThumbnail()).into(myViewHolder.imgCast);
     }
 
     @Override

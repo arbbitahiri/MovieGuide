@@ -1,5 +1,6 @@
 package com.arb.movieguideapp.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.models.Movie;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -30,7 +32,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.imgMovie.setImageResource(mMovies.get(i).getThumbnail());
+        Movie movie = mMovies.get(i);
+
+        Picasso.get()
+                .load(movie.getThumbnail())
+                .into(myViewHolder.imgMovie);
     }
 
     @Override
@@ -44,7 +50,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            imgMovie = itemView.findViewById(R.id.item_more_img);
+            imgMovie = itemView.findViewById(R.id.item_movie_img);
         }
     }
 }

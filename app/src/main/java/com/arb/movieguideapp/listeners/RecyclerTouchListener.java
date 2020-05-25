@@ -1,6 +1,5 @@
 package com.arb.movieguideapp.listeners;
 
-
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -9,10 +8,13 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.arb.movieguideapp.models.Movie;
+
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
     private ClickListener clickListener;
     private GestureDetector gestureDetector;
+    private Movie movie;
 
     public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
 
@@ -20,21 +22,9 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
 
-
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-
-                if (child != null && clickListener != null) {
-
-                    clickListener.onLongClickListener(child, recyclerView.getChildPosition(child));
-                }
             }
         });
     }
@@ -65,7 +55,5 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
     public interface ClickListener {
 
         void onClick(View view, int position);
-
-        void onLongClickListener(View view, int position);
     }
 }

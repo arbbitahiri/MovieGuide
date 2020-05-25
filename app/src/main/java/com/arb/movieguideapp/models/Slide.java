@@ -3,7 +3,7 @@ package com.arb.movieguideapp.models;
 public class Slide {
 
     private String title;
-    private String ratings;
+    private String genre;
     private int thumbnail;
 
     public Slide(String title, int thumbnail) {
@@ -11,18 +11,18 @@ public class Slide {
         this.thumbnail = thumbnail;
     }
 
-    public Slide(String title, String ratings, int thumbnail) {
+    public Slide(String title, String genre, int thumbnail) {
         this.title = title;
-        this.ratings = ratings;
+        this.genre = genre;
         this.thumbnail = thumbnail;
     }
 
     public String getRatings() {
-        return ratings;
+        return genre;
     }
 
-    public void setRatings(String ratings) {
-        this.ratings = ratings;
+    public void setRatings(String genre) {
+        this.genre = genre;
     }
 
     public String getTitle() {

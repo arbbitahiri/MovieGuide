@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.models.Movie;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -39,11 +40,9 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         myViewHolder.txtTitle.setText(mMovies.get(i).getTitle());
-        myViewHolder.txtYearGenreTime.setText(mMovies.get(i).getYear_genre_time());
+        myViewHolder.txtGenre.setText(mMovies.get(i).getGenre());
         myViewHolder.txtRatings.setText(mMovies.get(i).getRatings());
-        myViewHolder.imgMovie.setImageResource(mMovies.get(i).getThumbnail());
-
-//        Glide.with(mContext).load(mMovies.get(i).getThumbnail())
+        Picasso.get().load(mMovies.get(i).get_thumbnail()).into(myViewHolder.imgMovie);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtTitle;
-        private TextView txtYearGenreTime;
+        private TextView txtGenre;
         private TextView txtRatings;
         private ImageView imgMovie;
 
@@ -61,7 +60,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
             super(itemView);
 
             txtTitle = itemView.findViewById(R.id.movie_title);
-            txtYearGenreTime = itemView.findViewById(R.id.year_genre_time);
+            txtGenre = itemView.findViewById(R.id.year_genre_time);
             txtRatings = itemView.findViewById(R.id.ratings);
             imgMovie = itemView.findViewById(R.id.item_movie_img_f);
         }

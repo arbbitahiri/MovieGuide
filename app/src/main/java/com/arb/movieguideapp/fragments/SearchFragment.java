@@ -8,14 +8,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
+import com.arb.movieguideapp.adapters.CategoryAdapter;
+import com.arb.movieguideapp.listeners.RecyclerTouchListener;
+import com.arb.movieguideapp.models.Category;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchFragment extends Fragment {
+
+    private CategoryAdapter categoryAdapter;
+    private List<Category> categoryList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -39,5 +53,69 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        RecyclerView rvCategory = view.findViewById(R.id.rv_categories);
+        categoryAdapter = new CategoryAdapter(getContext(), categoryList);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        rvCategory.setLayoutManager(layoutManager);
+        rvCategory.setItemAnimator(new DefaultItemAnimator());
+
+        rvCategory.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL));
+
+        rvCategory.addOnItemTouchListener(new RecyclerTouchListener(getContext(), rvCategory,
+                new RecyclerTouchListener.ClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        Toast.makeText(getContext(), "ON CLICK", Toast.LENGTH_SHORT).show();
+                    }
+                }));
+
+        rvCategory.setAdapter(categoryAdapter);
+
+        populateCategory();
+    }
+
+
+    private void populateCategory() {
+        Category category = new Category("Action");
+        categoryList.add(category);
+
+        category = new Category("Adventure");
+        categoryList.add(category);
+
+        category = new Category("Classics");
+        categoryList.add(category);
+
+        category = new Category("Comedies");
+        categoryList.add(category);
+
+        category = new Category("Documentaries");
+        categoryList.add(category);
+
+        category = new Category("Dramas");
+        categoryList.add(category);
+
+        category = new Category("History");
+        categoryList.add(category);
+
+        category = new Category("Horror");
+        categoryList.add(category);
+
+        category = new Category("Romance");
+        categoryList.add(category);
+
+        category = new Category("Sci-Fi & Fantasy");
+        categoryList.add(category);
+
+        category = new Category("Thriller");
+        categoryList.add(category);
+
+        categoryAdapter.notifyDataSetChanged();
     }
 }

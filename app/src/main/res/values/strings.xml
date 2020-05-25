@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">Movie Guide</string>
-    <string name="txtPopular">Best Popular Movies</string>
-    <string name="txtAction">Best Action Movies</string>
+    <string name="txtPopular">Popular Movies</string>
+    <string name="txtTrending">Trending Now</string>
+    <string name="txtNowPlaying">Now Playing</string>
+    <string name="txtTopRated">Top Rated</string>
+    <string name="txtUpcoming">Upcoming Movies</string>
+    <string name="txtAwardWinning">Award Winning Movies</string>
     <string name="interstellar">Interstellar</string>
     <string name="release_date_interstellar">October 26, 2014 (USA)</string>
     <string name="ratings_interstellar">8.6 IMDb | 72% Rotten Tomatoes</string>
@@ -58,4 +62,9 @@
     <string name="cancel_account">Cancel Account</string>
     <string name="feedback">Feedback</string>
     <string name="search_for_a_movie">Search for a movie</string>
+    <string name="genre">Genre</string>
+    <string name="history">History</string>
+    <string name="romance">Romance</string>
+    <string name="add_to_list">Add to List</string>
+    <string name="category">Category</string>
 </resources>
