@@ -7,13 +7,14 @@
     android:layout_height="70dp"
     android:background="@color/colorTheme">
 
-    <TextView
-        android:id="@+id/txtCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btnCategory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:text="@string/category"
         android:textColor="@color/colorAccent"
         android:textSize="30sp"
+        android:background="@color/colorTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -67,4 +67,11 @@
     <string name="romance">Romance</string>
     <string name="add_to_list">Add to List</string>
     <string name="category">Category</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login_image">Login Image</string>
+    <string name="login">Login</string>
+    <string name="not_registered_sign_up_here">Not registered? Sign up here</string>
+    <string name="log_in_here">Already have an account? Log in here</string>
+    <string name="register">Register</string>
 </resources>

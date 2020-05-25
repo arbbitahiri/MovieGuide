@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,7 +35,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull CategoryAdapter.MyViewHolder holder, int position) {
-        holder.txtCategory.setText(mCategory.get(position).getCategories());
+        holder.btnCategory.setText(mCategory.get(position).getCategories());
     }
 
     @Override
@@ -43,12 +44,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView txtCategory;
+        private Button btnCategory;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            txtCategory = itemView.findViewById(R.id.txtCategory);
+            btnCategory = itemView.findViewById(R.id.btnCategory);
         }
     }
 }

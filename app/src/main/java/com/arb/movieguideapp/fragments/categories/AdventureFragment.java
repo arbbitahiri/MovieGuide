@@ -1,12 +1,8 @@
-package com.arb.movieguideapp.fragments;
+package com.arb.movieguideapp.fragments.categories;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,23 +30,21 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class AdventureFragment extends Fragment {
 
     private List<Slide> lstSlides = new ArrayList<>();
     private List<Movie> lstMovies = new ArrayList<>();
-    private List<Movie> lstMovies1 = new ArrayList<>();
-    private List<Movie> lstMovies2 = new ArrayList<>();
 
     private RecyclerView rvPopular, rvTrending, rvNowPlaying, rvTopRated, rvUpcoming;
     private ViewPager slidePager;
     private TabLayout indicator;
 
-    private MovieAdapter movieAdapter, movieAdapter1, movieAdapter2;
+    private MovieAdapter movieAdapter;
     private AlertDialog progressDialog;
-
-    public static HomeFragment newInstance() {return new HomeFragment();}
-
-    public HomeFragment(){}
 
     @Nullable
     @Override
@@ -74,7 +68,7 @@ public class HomeFragment extends Fragment {
 
     private void readDataFromExternalApi() {
         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage("Loading Movies...");
         progressDialog.show();
 
         GetDatService service = RetrofitClientInstance.getRetrofitInstance().create(GetDatService.class);
@@ -88,7 +82,7 @@ public class HomeFragment extends Fragment {
                     movieAdapter = new MovieAdapter(lstMovies);
                     initRecycleView(rvTopRated);
                 } else {
-                    Toast.makeText(getContext(), "onResponse - something wrong" + response.message(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "onResponse - something wrong " + response.message(), Toast.LENGTH_LONG).show();
                 }
 
                 movieAdapter.notifyDataSetChanged();
@@ -130,7 +124,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void populateSlideData() {
-        lstSlides.add(new Slide("Avengers: Endgame","Action ‧ Sci-fi", R.drawable.z_avengers123));
         lstSlides.add(new Slide("The Dark Knight","Action ‧ Adventure ‧ Drama ", R.drawable.z_darkknight123));
         lstSlides.add(new Slide("Inception","Thriller ‧ Mystery & Suspense", R.drawable.z_inception123));
         lstSlides.add(new Slide("Zodiac","Mystery & Suspense", R.drawable.z_zodiac123));

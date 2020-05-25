@@ -10,4 +10,5 @@
     <color name="colorBlue">#4E7AB5</color>
 
     <color name="colorWhite">#ffffff</color>
+    <color name="colorLogin">#11000000</color>
 </resources>
