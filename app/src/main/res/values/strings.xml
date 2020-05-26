@@ -58,7 +58,7 @@
     <string name="about">About</string>
     <string name="language">Language</string>
     <string name="dark_mode">Dark Mode</string>
-    <string name="update_password">Update Password</string>
+    <string name="update_password">Change Password</string>
     <string name="cancel_account">Cancel Account</string>
     <string name="feedback">Feedback</string>
     <string name="search_for_a_movie">Search for a movie</string>
@@ -74,4 +74,10 @@
     <string name="not_registered_sign_up_here">Not registered? Sign up here</string>
     <string name="log_in_here">Already have an account? Log in here</string>
     <string name="register">Register</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="email_image">Email Image</string>
+    <string name="password_image">Password Image</string>
+    <string name="name">Name</string>
+    <string name="name_image">Name Image</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>
