@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private List<Slide> lstSlides = new ArrayList<>();
+    private List<Slide> lstSlides;
     private List<Movie> lstMovies = new ArrayList<>();
     private List<Movie> lstMovies1 = new ArrayList<>();
     private List<Movie> lstMovies2 = new ArrayList<>();
@@ -62,55 +63,66 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initViews(view);
+//        populateSlideData();
+//        SlideAdapter slideAdapter = new SlideAdapter(lstSlides);
+//        slidePager.setAdapter(slideAdapter);
+//        indicator.setupWithViewPager(slidePager,true);
 
-        populateSlideData();
-        SlideAdapter slideAdapter = new SlideAdapter(lstSlides);
-        slidePager.setAdapter(slideAdapter);
-        indicator.setupWithViewPager(slidePager,true);
+        GetDatService service = RetrofitClientInstance.getRetrofitInstance().create(GetDatService.class);
 
-        readDataFromExternalApi();
+        initViews(view, rvPopular, R.id.rv_popular, service.getPopular());
+        initViews(view, rvTrending, R.id.rv_trending, service.getLatest());
+        initViews(view, rvNowPlaying, R.id.rv_now_playing, service.getNowPlaying());
+        initViews(view, rvTopRated, R.id.rv_top_rated, service.getTopRated());
+        initViews(view, rvUpcoming, R.id.rv_upcoming, service.getUpcoming());
     }
 
-    private void readDataFromExternalApi() {
+    private void initViews(@NonNull View view, RecyclerView rv, int recycle, Call<MovieWrapper> call){
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        GetDatService service = RetrofitClientInstance.getRetrofitInstance().create(GetDatService.class);
+        rv = view.findViewById(recycle);
 
-        Call<MovieWrapper> callTopRated = service.getTopRated();
-        callTopRated.enqueue(new Callback<MovieWrapper>() {
-            @Override
-            public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
-                if (response.body() != null) {
-                    lstMovies = response.body().getMovies();
-                    movieAdapter = new MovieAdapter(lstMovies);
-                    initRecycleView(rvTopRated);
-                } else {
-                    Toast.makeText(getContext(), "onResponse - something wrong" + response.message(), Toast.LENGTH_LONG).show();
-                }
+        initRecycleView(rv);
 
-                movieAdapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<MovieWrapper> call, Throwable t) {
-                progressDialog.dismiss();
-                Toast.makeText(getContext(), "exception: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        readDataFromExternalApi(rv, call);
     }
 
-    private void initViews(@NonNull View view) {
-        rvPopular = view.findViewById(R.id.rv_popular);
-        rvTrending = view.findViewById(R.id.rv_trending);
-        rvNowPlaying = view.findViewById(R.id.rv_now_playing);
-        rvTopRated = view.findViewById(R.id.rv_top_rated);
-        rvUpcoming = view.findViewById(R.id.rv_upcoming);
-        slidePager = view.findViewById(R.id.slider_pager);
-        indicator = view.findViewById(R.id.indicator);
+    private void readDataFromExternalApi(final RecyclerView rv, Call<MovieWrapper> call) {
+        try {
+            call.enqueue(new Callback<MovieWrapper>() {
+                @Override
+                public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
+                    if (response.body() != null) {
+                        List<Movie> movieList = response.body().getMovies();
+//                        for (Movie m : movieList) {
+//                            Log.v("MOVIE TITLE  ", m.getTitle() + rv);
+//                        }
+                        movieAdapter = new MovieAdapter(movieList);
+                        rv.setAdapter(movieAdapter);
+                        rv.smoothScrollToPosition(0);
+                    } else {
+                        Toast.makeText(getContext(), "onResponse - something wrong" + response.message(), Toast.LENGTH_LONG).show();
+                    }
+
+                    movieAdapter.notifyDataSetChanged();
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<MovieWrapper> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Log.d("Error ", t.getMessage());
+                    Toast.makeText(getContext(), "Error fetching data!" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch (Exception e) {
+            progressDialog.dismiss();
+            Log.d("Error ", e.getMessage());
+            Toast.makeText(getContext(), "Error fetching data! " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initOnClick(RecyclerView rv, final String movie) {
@@ -126,7 +138,7 @@ public class HomeFragment extends Fragment {
     private void initRecycleView(RecyclerView rv) {
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(movieAdapter);
+//        rv.setAdapter(movieAdapter);
     }
 
     private void populateSlideData() {

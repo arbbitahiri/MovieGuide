@@ -34,19 +34,18 @@
 
         <TextView
             android:id="@+id/txtPopular"
-            android:textColor="@color/colorBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/txtPopular"
             android:textAllCaps="true"
+            android:textColor="@color/colorBlue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/indicator"/>
+            app:layout_constraintTop_toBottomOf="@+id/indicator" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_popular"
@@ -66,6 +65,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/txtTrending"
             android:textAllCaps="true"
             android:textColor="@color/colorBlue"
@@ -92,6 +92,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/txtNowPlaying"
             android:textAllCaps="true"
             android:textColor="@color/colorBlue"
@@ -118,6 +119,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/txtTopRated"
             android:textAllCaps="true"
             android:textColor="@color/colorBlue"
@@ -145,6 +147,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/txtUpcoming"
             android:textAllCaps="true"
             android:textColor="@color/colorBlue"

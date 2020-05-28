@@ -57,9 +57,9 @@
     <string name="sign_out">Sign Out</string>
     <string name="about">About</string>
     <string name="language">Language</string>
-    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode">Light Mode</string>
     <string name="update_password">Change Password</string>
-    <string name="cancel_account">Cancel Account</string>
+    <string name="cancel_account">Deactivate Account</string>
     <string name="feedback">Feedback</string>
     <string name="search_for_a_movie">Search for a movie</string>
     <string name="genre">Genre</string>
@@ -80,4 +80,8 @@
     <string name="name">Name</string>
     <string name="name_image">Name Image</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="verify_your_account">Verify your account</string>
+    <string name="change_password">Change Password</string>
+    <string name="where_to_watch_1">WhereToWatch</string>
+    <string name="view_details">View Details</string>
 </resources>

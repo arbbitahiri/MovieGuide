@@ -27,18 +27,18 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/ic_search_white_24dp" />
 
-        <EditText
-            android:id="@+id/editSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/search_movie"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:layout_marginEnd="16dp"
-            tools:layout_editor_absoluteX="62dp"
-            tools:layout_editor_absoluteY="4dp"
-            android:importantForAutofill="no"
-            android:inputType="text" />
+                <EditText
+                    android:id="@+id/editSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_thin"
+                    android:hint="@string/search_movie"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    tools:layout_editor_absoluteX="62dp"
+                    tools:layout_editor_absoluteY="4dp" />
 
         </Toolbar>
 

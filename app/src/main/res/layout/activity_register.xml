@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    android:background="@drawable/gradient_login">
+    tools:context=".login.LoginActivity"
+    android:background="@color/colorTheme">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginTop="50dp"
         android:contentDescription="@string/login_image"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
         android:text="@string/app_name"
+        android:textAllCaps="true"
         android:textColor="@color/colorBlue"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,11 +37,13 @@
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:importantForAutofill="no"
+        android:fontFamily="@font/roboto_thin"
         android:hint="@string/name"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
         android:textColor="@color/colorBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,8 +66,10 @@
         android:id="@+id/txtReEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:fontFamily="@font/roboto_thin"
         android:hint="@string/email"
         android:importantForAutofill="no"
         android:inputType="textEmailAddress"
@@ -73,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtName" />
 
     <ImageView
-        android:id="@+id/imgEmail"
+        android:id="@+id/imgPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -89,8 +95,10 @@
         android:id="@+id/txtRePassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:fontFamily="@font/roboto_thin"
         android:hint="@string/password"
         android:importantForAutofill="no"
         android:inputType="textPassword"
@@ -100,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtReEmail" />
 
     <ImageView
-        android:id="@+id/imgPassword"
+        android:id="@+id/imgConfirmPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -113,18 +121,20 @@
         app:srcCompat="@drawable/ic_lock_black_24dp" />
 
     <EditText
-        android:id="@+id/txtConfirmPassword"
+        android:id="@+id/txtChangePassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:fontFamily="@font/roboto_thin"
+        android:hint="@string/confirm_password"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:textColor="@color/colorBlue"
-        android:hint="@string/confirm_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtRePassword"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/txtRePassword" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -132,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="2dp"
-        app:layout_constraintEnd_toStartOf="@+id/txtConfirmPassword"
+        app:layout_constraintEnd_toStartOf="@+id/txtChangePassword"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtRePassword"
@@ -144,12 +154,12 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
-        app:cardBackgroundColor="@color/colorTheme"
+        app:cardBackgroundColor="@color/colorBlue"
         app:cardCornerRadius="25dp"
         app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtConfirmPassword">
+        app:layout_constraintTop_toBottomOf="@+id/txtChangePassword">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -160,8 +170,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:fontFamily="@font/roboto_bold"
                 android:text="@string/register"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/colorTheme"
                 android:textSize="18sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -171,6 +182,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
+        android:fontFamily="@font/roboto_bold"
         android:text="@string/log_in_here"
         android:textColor="@color/colorBlue"
         app:layout_constraintEnd_toEndOf="parent"

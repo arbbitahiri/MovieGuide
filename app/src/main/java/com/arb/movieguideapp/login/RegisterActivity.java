@@ -1,4 +1,4 @@
-package com.arb.movieguideapp;
+package com.arb.movieguideapp.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -9,11 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arb.movieguideapp.MainActivity;
+import com.arb.movieguideapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
         name = findViewById(R.id.txtName);
         email = findViewById(R.id.txtReEmail);
         password = findViewById(R.id.txtRePassword);
-        confirmPassword = findViewById(R.id.txtConfirmPassword);
+        confirmPassword = findViewById(R.id.txtChangePassword);
         cvRegister = findViewById(R.id.cv_register);
         txtLogin = findViewById(R.id.txtLoginHere);
 
@@ -88,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (!pass.equals(confPass)){
                     confirmPassword.setError("Password does not match");
-                    password.requestFocus();
+                    confirmPassword.requestFocus();
                 } else {
                     if (!(emailId.isEmpty() && pass.isEmpty())) {
                         mFirebaseAuth.createUserWithEmailAndPassword(emailId, pass)
@@ -100,7 +101,8 @@ public class RegisterActivity extends AppCompatActivity {
                                                     .setAction("Action", null).show();
                                         else{
                                             FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                                            firebaseUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            firebaseUser.sendEmailVerification()
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     Toast.makeText(RegisterActivity.this,
@@ -117,25 +119,24 @@ public class RegisterActivity extends AppCompatActivity {
                                             Toast.makeText(RegisterActivity.this, "User created", Toast.LENGTH_SHORT).show();
                                             userID = mFirebaseAuth.getCurrentUser().getUid();
 
+                                            DocumentReference documentReference = mFirebaseStore.collection("users").document(userID);
                                             Map<String,Object> user = new HashMap<>();
                                             user.put("fName",fullName);
                                             user.put("email",email);
 
-                                            mFirebaseStore.collection("users")
-                                                    .add(user)
-                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                        @Override
-                                                        public void onSuccess(DocumentReference documentReference) {
-                                                            Log.d("TAG", "User ID: " + documentReference.getId());
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Log.w("TAG", "Error adding document", e);
-                                                        }
-                                                    });
-                                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.v("TAG", "onSuccess: user Profile is created for "+ userID);
+                                                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                                                    finish();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.v("TAG", "onFailure: " + e.toString());
+                                                }
+                                            });
                                         }
                                     }
                                 });

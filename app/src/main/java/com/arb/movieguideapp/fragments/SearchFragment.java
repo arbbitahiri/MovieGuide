@@ -38,19 +38,6 @@ public class SearchFragment extends Fragment {
     private CategoryAdapter categoryAdapter;
     private List<Category> categoryList = new ArrayList<>();
 
-    private ActionFragment actionFragment = new ActionFragment();
-    private AdventureFragment adventureFragment = new AdventureFragment();
-    private ClassicsFragment classicsFragment = new ClassicsFragment();
-    private ComedyFragment comedyFragment = new ComedyFragment();
-    private CrimeFragment crimeFragment = new CrimeFragment();
-    private DocumentaryFragment documentaryFragment = new DocumentaryFragment();
-    private DramaFragment dramaFragment = new DramaFragment();
-    private HistoryFragment historyFragment = new HistoryFragment();
-    private HorrorFragment horrorFragment = new HorrorFragment();
-    private RomanceFragment romanceFragment = new RomanceFragment();
-    private SciFiFantasyFragment sciFiFantasyFragment = new SciFiFantasyFragment();
-    private ThrillerFragment thrillerFragment = new ThrillerFragment();
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,18 +63,18 @@ public class SearchFragment extends Fragment {
                     public void onClick(View view, int position) {
 
                         switch (position) {
-                            case 0: getFragment(actionFragment); break;
-                            case 1: getFragment(adventureFragment); break;
-                            case 2: getFragment(classicsFragment); break;
-                            case 3: getFragment(comedyFragment); break;
-                            case 4: getFragment(crimeFragment); break;
-                            case 5: getFragment(documentaryFragment); break;
-                            case 6: getFragment(dramaFragment); break;
-                            case 7: getFragment(historyFragment); break;
-                            case 8: getFragment(horrorFragment); break;
-                            case 9: getFragment(romanceFragment); break;
-                            case 10: getFragment(sciFiFantasyFragment); break;
-                            case 11: getFragment(thrillerFragment); break;
+                            case 0: getFragment(new ActionFragment()); break;
+                            case 1: getFragment(new AdventureFragment()); break;
+                            case 2: getFragment(new ClassicsFragment()); break;
+                            case 3: getFragment(new ComedyFragment()); break;
+                            case 4: getFragment(new CrimeFragment()); break;
+                            case 5: getFragment(new DocumentaryFragment()); break;
+                            case 6: getFragment(new DramaFragment()); break;
+                            case 7: getFragment(new HistoryFragment()); break;
+                            case 8: getFragment(new HorrorFragment()); break;
+                            case 9: getFragment(new RomanceFragment()); break;
+                            case 10: getFragment(new SciFiFantasyFragment()); break;
+                            case 11: getFragment(new ThrillerFragment()); break;
                         }
                     }
                 }));

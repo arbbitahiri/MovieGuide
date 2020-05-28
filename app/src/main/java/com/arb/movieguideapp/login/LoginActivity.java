@@ -1,4 +1,4 @@
-package com.arb.movieguideapp;
+package com.arb.movieguideapp.login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -9,12 +9,13 @@ import androidx.cardview.widget.CardView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arb.movieguideapp.MainActivity;
+import com.arb.movieguideapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,8 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         actionBar.hide();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        email = findViewById(R.id.txtEmail);
-        password = findViewById(R.id.txtPassword);
+
+        email = findViewById(R.id.txtPassword);
+        password = findViewById(R.id.txtChangePassword);
         txtSignUp = findViewById(R.id.txtSingUp);
         txtForgotPassword = findViewById(R.id.txtForgotPassword);
         cvLogin = findViewById(R.id.cv_login);
@@ -51,13 +53,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if ( mFirebaseUser!= null ) {
+                if (mFirebaseUser!= null) {
                     Toast.makeText(LoginActivity.this, "You are logged in", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
-                else
-                    Toast.makeText(LoginActivity.this, "Please Login", Toast.LENGTH_LONG).show();
             }
         };
 

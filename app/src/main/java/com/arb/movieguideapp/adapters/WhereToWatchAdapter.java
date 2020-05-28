@@ -25,7 +25,7 @@ public class WhereToWatchAdapter extends RecyclerView.Adapter<WhereToWatchAdapte
     @NonNull
     @Override
     public WhereToWatchAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_wheretowatch, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_where_to_watch, viewGroup, false);
         return new MyViewHolder(view);
     }
 
