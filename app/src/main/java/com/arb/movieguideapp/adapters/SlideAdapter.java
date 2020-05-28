@@ -12,6 +12,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.models.Slide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -33,7 +34,11 @@ public class SlideAdapter extends PagerAdapter {
         TextView txtSlide = slideLayout.findViewById(R.id.slide_title);
         TextView txtRatings = slideLayout.findViewById(R.id.slide_rating);
 
-        imgSlide.setImageResource(mSlide.get(position).getThumbnail());
+        Slide slide = mSlide.get(position);
+
+        Picasso.get()
+                .load(slide.getThumbnail())
+                .into(imgSlide);
         txtSlide.setText(mSlide.get(position).getTitle());
         txtRatings.setText(mSlide.get(position).getRatings());
 
@@ -43,7 +48,7 @@ public class SlideAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mSlide.size();
+        return null != mSlide ? mSlide.size() : 0;
     }
 
     @Override

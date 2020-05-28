@@ -27,26 +27,25 @@ import com.arb.movieguideapp.adapters.SlideAdapter;
 import com.arb.movieguideapp.clients.GetDatService;
 import com.arb.movieguideapp.listeners.RecyclerTouchListener;
 import com.arb.movieguideapp.models.Movie;
-import com.arb.movieguideapp.models.MovieWrapper;
+import com.arb.movieguideapp.wrappers.MovieWrapper;
 import com.arb.movieguideapp.models.Slide;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
+import com.arb.movieguideapp.wrappers.SlideWrapper;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private List<Slide> lstSlides;
-    private List<Movie> lstMovies = new ArrayList<>();
-    private List<Movie> lstMovies1 = new ArrayList<>();
-    private List<Movie> lstMovies2 = new ArrayList<>();
 
     private RecyclerView rvPopular, rvTrending, rvNowPlaying, rvTopRated, rvUpcoming;
     private ViewPager slidePager;
     private TabLayout indicator;
 
-    private MovieAdapter movieAdapter, movieAdapter1, movieAdapter2;
+    private MovieAdapter movieAdapter;
+    private SlideAdapter slideAdapter;
+
     private AlertDialog progressDialog;
 
     public static HomeFragment newInstance() {return new HomeFragment();}
@@ -63,12 +62,9 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        populateSlideData();
-//        SlideAdapter slideAdapter = new SlideAdapter(lstSlides);
-//        slidePager.setAdapter(slideAdapter);
-//        indicator.setupWithViewPager(slidePager,true);
-
         GetDatService service = RetrofitClientInstance.getRetrofitInstance().create(GetDatService.class);
+
+        initViews(view, slidePager, indicator, service.getTopRatedSlide());
 
         initViews(view, rvPopular, R.id.rv_popular, service.getPopular());
         initViews(view, rvTrending, R.id.rv_trending, service.getLatest());
@@ -77,31 +73,35 @@ public class HomeFragment extends Fragment {
         initViews(view, rvUpcoming, R.id.rv_upcoming, service.getUpcoming());
     }
 
-    private void initViews(@NonNull View view, RecyclerView rv, int recycle, Call<MovieWrapper> call){
+    private void initViews(@NonNull View view, RecyclerView recyclerView, int recycle, Call<MovieWrapper> call){
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        rv = view.findViewById(recycle);
+        recyclerView = view.findViewById(recycle);
 
-        initRecycleView(rv);
+        initRecycleView(recyclerView);
 
-        readDataFromExternalApi(rv, call);
+        readDataFromExternalApi(recyclerView, call);
     }
 
-    private void readDataFromExternalApi(final RecyclerView rv, Call<MovieWrapper> call) {
+    private void initViews(@NonNull View view, ViewPager viewPager, TabLayout tabIndicator, Call<SlideWrapper> call){
+        viewPager = view.findViewById(R.id.slider_pager);
+        tabIndicator = view.findViewById(R.id.indicator);
+
+        readDataFromExternalApi(viewPager, tabIndicator, call);
+    }
+
+    private void readDataFromExternalApi(final RecyclerView recyclerView, Call<MovieWrapper> call) {
         try {
             call.enqueue(new Callback<MovieWrapper>() {
                 @Override
                 public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
                     if (response.body() != null) {
                         List<Movie> movieList = response.body().getMovies();
-//                        for (Movie m : movieList) {
-//                            Log.v("MOVIE TITLE  ", m.getTitle() + rv);
-//                        }
                         movieAdapter = new MovieAdapter(movieList);
-                        rv.setAdapter(movieAdapter);
-                        rv.smoothScrollToPosition(0);
+                        recyclerView.setAdapter(movieAdapter);
+                        recyclerView.smoothScrollToPosition(0);
                     } else {
                         Toast.makeText(getContext(), "onResponse - something wrong" + response.message(), Toast.LENGTH_LONG).show();
                     }
@@ -112,6 +112,38 @@ public class HomeFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<MovieWrapper> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Log.d("Error ", t.getMessage());
+                    Toast.makeText(getContext(), "Error fetching data!" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch (Exception e) {
+            progressDialog.dismiss();
+            Log.d("Error ", e.getMessage());
+            Toast.makeText(getContext(), "Error fetching data! " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void readDataFromExternalApi(final ViewPager viewPager, final TabLayout tabIndicator, Call<SlideWrapper> call) {
+        try {
+            call.enqueue(new Callback<SlideWrapper>() {
+                @Override
+                public void onResponse(Call<SlideWrapper> call, Response<SlideWrapper> response) {
+                    if (response.body() != null) {
+                        List<Slide> slideList = response.body().getMovies();
+                        slideAdapter = new SlideAdapter(slideList);
+                        viewPager.setAdapter(slideAdapter);
+                    } else {
+                        Toast.makeText(getContext(), "onResponse - something wrong" + response.message(), Toast.LENGTH_LONG).show();
+                    }
+
+                    tabIndicator.setupWithViewPager(viewPager,true);
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<SlideWrapper> call, Throwable t) {
                     progressDialog.dismiss();
                     Log.d("Error ", t.getMessage());
                     Toast.makeText(getContext(), "Error fetching data!" + t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -141,12 +173,12 @@ public class HomeFragment extends Fragment {
 //        rv.setAdapter(movieAdapter);
     }
 
-    private void populateSlideData() {
-        lstSlides.add(new Slide("Avengers: Endgame","Action ‧ Sci-fi", R.drawable.z_avengers123));
-        lstSlides.add(new Slide("The Dark Knight","Action ‧ Adventure ‧ Drama ", R.drawable.z_darkknight123));
-        lstSlides.add(new Slide("Inception","Thriller ‧ Mystery & Suspense", R.drawable.z_inception123));
-        lstSlides.add(new Slide("Zodiac","Mystery & Suspense", R.drawable.z_zodiac123));
-        lstSlides.add(new Slide("Once Upon a Time in Hollywood","Comedy ‧ Drama", R.drawable.z_out123));
-        lstSlides.add(new Slide("The Irishman","Drama ‧ Mystery & Suspense", R.drawable.z_theirishman123));
-    }
+//    private void populateSlideData() {
+//        lstSlides.add(new Slide("Avengers: Endgame","Action ‧ Sci-fi", R.drawable.z_avengers123));
+//        lstSlides.add(new Slide("The Dark Knight","Action ‧ Adventure ‧ Drama ", R.drawable.z_darkknight123));
+//        lstSlides.add(new Slide("Inception","Thriller ‧ Mystery & Suspense", R.drawable.z_inception123));
+//        lstSlides.add(new Slide("Zodiac","Mystery & Suspense", R.drawable.z_zodiac123));
+//        lstSlides.add(new Slide("Once Upon a Time in Hollywood","Comedy ‧ Drama", R.drawable.z_out123));
+//        lstSlides.add(new Slide("The Irishman","Drama ‧ Mystery & Suspense", R.drawable.z_theirishman123));
+//    }
 }

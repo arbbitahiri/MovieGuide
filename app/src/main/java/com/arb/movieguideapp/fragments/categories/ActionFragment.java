@@ -1,13 +1,11 @@
 package com.arb.movieguideapp.fragments.categories;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,7 +22,7 @@ import com.arb.movieguideapp.adapters.SlideAdapter;
 import com.arb.movieguideapp.clients.GetDatService;
 import com.arb.movieguideapp.listeners.RecyclerTouchListener;
 import com.arb.movieguideapp.models.Movie;
-import com.arb.movieguideapp.models.MovieWrapper;
+import com.arb.movieguideapp.wrappers.MovieWrapper;
 import com.arb.movieguideapp.models.Slide;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
 import com.google.android.material.tabs.TabLayout;
@@ -61,7 +59,7 @@ public class ActionFragment extends Fragment {
 
         initViews(view);
 
-        populateSlideData();
+//        populateSlideData();
         SlideAdapter slideAdapter = new SlideAdapter(lstSlides);
         slidePager.setAdapter(slideAdapter);
         indicator.setupWithViewPager(slidePager,true);
@@ -127,11 +125,11 @@ public class ActionFragment extends Fragment {
         rv.setAdapter(movieAdapter);
     }
 
-    private void populateSlideData() {
-        lstSlides.add(new Slide("The Dark Knight","Action ‧ Adventure ‧ Drama ", R.drawable.z_darkknight123));
-        lstSlides.add(new Slide("Inception","Thriller ‧ Mystery & Suspense", R.drawable.z_inception123));
-        lstSlides.add(new Slide("Zodiac","Mystery & Suspense", R.drawable.z_zodiac123));
-        lstSlides.add(new Slide("Once Upon a Time in Hollywood","Comedy ‧ Drama", R.drawable.z_out123));
-        lstSlides.add(new Slide("The Irishman","Drama ‧ Mystery & Suspense", R.drawable.z_theirishman123));
-    }
+//    private void populateSlideData() {
+//        lstSlides.add(new Slide("The Dark Knight","Action ‧ Adventure ‧ Drama ", R.drawable.z_darkknight123));
+//        lstSlides.add(new Slide("Inception","Thriller ‧ Mystery & Suspense", R.drawable.z_inception123));
+//        lstSlides.add(new Slide("Zodiac","Mystery & Suspense", R.drawable.z_zodiac123));
+//        lstSlides.add(new Slide("Once Upon a Time in Hollywood","Comedy ‧ Drama", R.drawable.z_out123));
+//        lstSlides.add(new Slide("The Irishman","Drama ‧ Mystery & Suspense", R.drawable.z_theirishman123));
+//    }
 }

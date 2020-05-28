@@ -1,5 +1,6 @@
-package com.arb.movieguideapp.models;
+package com.arb.movieguideapp.wrappers;
 
+import com.arb.movieguideapp.models.Movie;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

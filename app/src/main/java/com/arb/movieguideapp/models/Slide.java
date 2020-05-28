@@ -1,17 +1,21 @@
 package com.arb.movieguideapp.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Slide {
 
+    @SerializedName("title")
     private String title;
     private String genre;
-    private int thumbnail;
+    @SerializedName("backdrop_path")
+    private String thumbnail;
 
-    public Slide(String title, int thumbnail) {
+    public Slide(String title, String thumbnail) {
         this.title = title;
         this.thumbnail = thumbnail;
     }
 
-    public Slide(String title, String genre, int thumbnail) {
+    public Slide(String title, String genre, String thumbnail) {
         this.title = title;
         this.genre = genre;
         this.thumbnail = thumbnail;
@@ -33,11 +37,11 @@ public class Slide {
         this.title = title;
     }
 
-    public int getThumbnail() {
-        return thumbnail;
+    public String getThumbnail() {
+        return "https://image.tmdb.org/t/p/w780" + thumbnail;
     }
 
-    public void setThumbnail(int thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 }

@@ -1,7 +1,8 @@
 package com.arb.movieguideapp.clients;
 
 import com.arb.movieguideapp.models.Movie;
-import com.arb.movieguideapp.models.MovieWrapper;
+import com.arb.movieguideapp.wrappers.MovieWrapper;
+import com.arb.movieguideapp.wrappers.SlideWrapper;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,6 +20,8 @@ public interface GetDatService {
 
     @GET("movie/top_rated?api_key=81229d17288cd3c3a979724d4d5c9cae&language=en-US&page=1&region=US")
     Call<MovieWrapper> getTopRated();
+    @GET("movie/top_rated?api_key=81229d17288cd3c3a979724d4d5c9cae&language=en-US&page=1&region=US")
+    Call<SlideWrapper> getTopRatedSlide();
 
     @GET("movie/upcoming?api_key=81229d17288cd3c3a979724d4d5c9cae&language=en-US&page=1&region=us")
     Call<MovieWrapper> getUpcoming();

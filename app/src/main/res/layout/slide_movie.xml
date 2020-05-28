@@ -39,7 +39,7 @@
         android:fontFamily="@font/roboto_bold"
         android:text="@string/movie_title_slide"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorBlue"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/gradient"
@@ -58,7 +58,7 @@
         android:fontFamily="@font/roboto_thin"
         android:text="@string/genre"
         android:textAlignment="center"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/gradient"
         app:layout_constraintTop_toBottomOf="@+id/slide_title" />
