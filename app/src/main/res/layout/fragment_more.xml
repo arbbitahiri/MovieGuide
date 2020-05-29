@@ -7,7 +7,7 @@
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorTheme"
-    tools:context=".fragments.SearchFragment">
+    tools:context=".ui.fragments.SearchFragment">
 
     <TextView
         android:id="@+id/txt_app_settings"

@@ -7,7 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorTheme"
     android:id="@+id/searchLayout"
-    tools:context=".fragments.SearchFragment">
+    tools:context=".ui.fragments.SearchFragment">
 
         <Toolbar
             android:id="@+id/toolbar"

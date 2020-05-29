@@ -84,4 +84,6 @@
     <string name="change_password">Change Password</string>
     <string name="where_to_watch_1">WhereToWatch</string>
     <string name="view_details">View Details</string>
+    <string name="movie_trailer_icon">Movie Trailer Icon</string>
+    <string name="trailer">Trailer</string>
 </resources>

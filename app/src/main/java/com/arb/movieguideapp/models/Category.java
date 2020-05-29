@@ -1,7 +1,11 @@
 package com.arb.movieguideapp.models;
 
-public class Category {
+import com.google.gson.annotations.SerializedName;
 
+public class Category {
+    @SerializedName("id")
+    private int id;
+    @SerializedName("name")
     private String categories;
 
     public Category(String categories) {

@@ -1,28 +1,29 @@
 package com.arb.movieguideapp.models;
 
-public class Cast {
+import com.google.gson.annotations.SerializedName;
 
-    private String title;
-    private int thumbnail;
+import java.io.Serializable;
 
-    public Cast(String title, int thumbnail) {
-        this.title = title;
-        this.thumbnail = thumbnail;
+public class Cast implements Serializable {
+
+    @SerializedName("name")
+    private String name;
+    @SerializedName("profile_path")
+    private String thumbnail;
+
+    public String getName() {
+        return name;
     }
 
-    public String getTitle() {
-        return title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getThumbnail() {
+        return "https://image.tmdb.org/t/p/w185" + thumbnail;
     }
 
-    public int getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(int thumbnail) {
+    public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 }

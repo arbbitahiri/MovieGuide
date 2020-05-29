@@ -6,11 +6,13 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorTheme"
-    tools:context=".fragments.HomeFragment">
+    android:id="@+id/homeLayout"
+    tools:context=".ui.fragments.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:id="@+id/tv_no_internet_error">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/slider_pager"

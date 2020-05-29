@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/nav_homeFragment"
-        android:name="com.arb.movieguideapp.fragments.HomeFragment"
+        android:name="com.arb.movieguideapp.ui.fragments.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_movies" />
 
     <fragment
         android:id="@+id/nav_searchFragment"
-        android:name="com.arb.movieguideapp.fragments.SearchFragment"
+        android:name="com.arb.movieguideapp.ui.fragments.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/nav_favoriteFragment"
-        android:name="com.arb.movieguideapp.fragments.FavoriteFragment"
+        android:name="com.arb.movieguideapp.ui.fragments.FavoriteFragment"
         android:label="@string/title_favorites"
         tools:layout="@layout/fragment_favorites" />
 
     <fragment
         android:id="@+id/nav_settingsFragment"
-        android:name="com.arb.movieguideapp.fragments.MoreFragment"
+        android:name="com.arb.movieguideapp.ui.fragments.MoreFragment"
         android:label="@string/title_more"
         tools:layout="@layout/fragment_more" />
 

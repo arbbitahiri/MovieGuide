@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.arb.movieguideapp.MainActivity;
+import com.arb.movieguideapp.ui.activity.MainActivity;
 import com.arb.movieguideapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
