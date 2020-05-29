@@ -6,6 +6,8 @@ import com.arb.movieguideapp.models.wrappers.SlideWrapper;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface GetMovieDataService {
 
@@ -23,6 +25,9 @@ public interface GetMovieDataService {
 
     @GET("movie/upcoming?api_key=81229d17288cd3c3a979724d4d5c9cae&language=en-US&page=1&region=us")
     Call<MovieWrapper> getUpcoming();
+
+    @GET("search/movie?api_key=81229d17288cd3c3a979724d4d5c9cae")
+    Call<MovieWrapper> getMovie(@Query("query") String movie_name);
 
     Call<Movie> searchByTitle(String title);
 }

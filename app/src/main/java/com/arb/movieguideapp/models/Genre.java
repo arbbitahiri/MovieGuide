@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Category implements Serializable {
+public class Genre implements Serializable {
     @SerializedName("id")
     private long id;
     @SerializedName("name")
     private String categories;
 
-    public Category(String categories) {
+    public Genre(String categories) {
         this.categories = categories;
     }
 

@@ -15,7 +15,7 @@ public class Movie implements Serializable {
     private String description;
     @SerializedName("genre_ids")
     private List<Long> genre;
-    private List<Category> categories;
+    private List<Genre> categories;
     @SerializedName("release_date")
     private String releaseDate;
     @SerializedName("vote_average")
@@ -76,11 +76,11 @@ public class Movie implements Serializable {
         this.genre = genre;
     }
 
-    public List<Category> getCategories() {
+    public List<Genre> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(List<Genre> categories) {
         this.categories = categories;
     }
 
@@ -114,12 +114,12 @@ public class Movie implements Serializable {
         this.voteAverage = voteAverage;
     }
 
-    public void mapGenres(List<Category> categoryList) {
+    public void mapGenres(List<Genre> genreList) {
         if (this.categories == null)
             this.categories = new ArrayList<>();
 
         for (Long l : genre) {
-            for (Category c : categoryList) {
+            for (Genre c : genreList) {
                 if (l.equals(c.getId()))
                     this.categories.add(c);
             }

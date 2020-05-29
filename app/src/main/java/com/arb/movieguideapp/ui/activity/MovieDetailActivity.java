@@ -7,8 +7,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,24 +20,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.clients.GetCastDataService;
-import com.arb.movieguideapp.clients.GetCategoryDataService;
 import com.arb.movieguideapp.clients.GetMovieTrailerService;
-import com.arb.movieguideapp.listeners.CategoryClickListener;
-import com.arb.movieguideapp.listeners.OnGetGenresCallback;
 import com.arb.movieguideapp.listeners.TrailerClickListener;
 import com.arb.movieguideapp.models.Cast;
-import com.arb.movieguideapp.models.Category;
+import com.arb.movieguideapp.models.Genre;
 import com.arb.movieguideapp.models.Movie;
 import com.arb.movieguideapp.models.MovieTrailer;
 import com.arb.movieguideapp.models.wrappers.CastWrapper;
-import com.arb.movieguideapp.models.wrappers.CategoryWrapper;
 import com.arb.movieguideapp.ui.adapters.CastAdapter;
 import com.arb.movieguideapp.ui.adapters.CategoryAdapter;
 import com.arb.movieguideapp.ui.adapters.TrailerAdapter;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
 import com.arb.movieguideapp.models.wrappers.MovieTrailerWrapper;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -60,7 +52,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private List<MovieTrailer> mMovieTrailers;
     private List<Cast> mCast;
-    private List<Category> mCategory;
+    private List<Genre> mGenre;
 
     private RecyclerView mTrailerRecyclerView, mCastRecycleView, mWTWRecycleView;
 
@@ -131,7 +123,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         List<String> genreString = new ArrayList<>();
         if (mMovie.getGenre() != null)  {
-            for (Category genre : movie.getCategories()) {
+            for (Genre genre : movie.getCategories()) {
                 genreString.add(genre.getCategories());
             }
         }
@@ -143,11 +135,11 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private String getGenres(List<String> genreString) {
         if (movie.getGenre() != null)  {
-            for (Category genre : movie.getCategories()) {
+            for (Genre genre : movie.getCategories()) {
                 genreString.add(genre.getCategories());
             }
         }
-        return TextUtils.join(", ", genreString);
+        return TextUtils.join(" ‧ ", genreString);
     }
 
     private void populateCasts(List<Cast> mCast){

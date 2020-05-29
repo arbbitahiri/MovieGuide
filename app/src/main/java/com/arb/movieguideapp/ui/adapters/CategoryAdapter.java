@@ -1,6 +1,5 @@
 package com.arb.movieguideapp.ui.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,24 +9,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
-import com.arb.movieguideapp.listeners.CategoryClickListener;
-import com.arb.movieguideapp.models.Cast;
-import com.arb.movieguideapp.models.Category;
+import com.arb.movieguideapp.listeners.GenreClickListener;
+import com.arb.movieguideapp.models.Genre;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
 
-    private CategoryClickListener categoryClickListener;
-    private final List<Category> mCategory;
+    private GenreClickListener genreClickListener;
+    private final List<Genre> mGenre;
 
-    public CategoryAdapter(List<Category> mCategory) {
-        this.mCategory = mCategory;
+    public CategoryAdapter(List<Genre> mGenre) {
+        this.mGenre = mGenre;
     }
 
-    public CategoryAdapter(List<Category> mCategory, CategoryClickListener categoryClickListener) {
-        this.categoryClickListener = categoryClickListener;
-        this.mCategory = mCategory;
+    public CategoryAdapter(List<Genre> mGenre, GenreClickListener genreClickListener) {
+        this.genreClickListener = genreClickListener;
+        this.mGenre = mGenre;
     }
 
     @NonNull
@@ -39,13 +37,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull CategoryAdapter.MyViewHolder holder, int position) {
-        Category category = mCategory.get(position);
-        holder.bind(category, categoryClickListener);
+        Genre genre = mGenre.get(position);
+        holder.bind(genre, genreClickListener);
     }
 
     @Override
     public int getItemCount() {
-        return mCategory.size();
+        return mGenre.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -57,12 +55,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             btnCategory = itemView.findViewById(R.id.btnCategory);
         }
 
-        public void bind(final Category category, final CategoryClickListener categoryClickListener) {
-            btnCategory.setText(category.getCategories());
+        public void bind(final Genre genre, final GenreClickListener genreClickListener) {
+            btnCategory.setText(genre.getCategories());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    categoryClickListener.onCategoryClick(category);
+                    genreClickListener.onCategoryClick(genre);
                 }
             });
         }

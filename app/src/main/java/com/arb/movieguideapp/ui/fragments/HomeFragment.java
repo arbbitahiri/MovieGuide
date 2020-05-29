@@ -2,10 +2,7 @@ package com.arb.movieguideapp.ui.fragments;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,19 +16,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.arb.movieguideapp.clients.GetCategoryDataService;
-import com.arb.movieguideapp.models.Category;
-import com.arb.movieguideapp.models.wrappers.CategoryWrapper;
+import com.arb.movieguideapp.clients.GetGenreDataService;
+import com.arb.movieguideapp.models.Genre;
+import com.arb.movieguideapp.models.wrappers.GenreWrapper;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
 import com.arb.movieguideapp.R;
-import com.arb.movieguideapp.ui.adapters.CategoryAdapter;
 import com.arb.movieguideapp.ui.adapters.MovieAdapter;
 import com.arb.movieguideapp.ui.adapters.SlideAdapter;
 import com.arb.movieguideapp.clients.GetMovieDataService;
@@ -48,7 +43,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private List<Category> genreList = new ArrayList<>();
+    private List<Genre> genreList = new ArrayList<>();
     private List<Slide> lstSlides;
 
     private RecyclerView rvPopular, rvNowPlaying, rvTopRated, rvUpcoming;
@@ -73,6 +68,7 @@ public class HomeFragment extends Fragment {
         GetMovieDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetMovieDataService.class);
 
         getMovieGenres();
+
         initViews(view, slidePager, indicator, service.getTopRatedSlide());
 
         initViews(view, rvPopular, R.id.rv_popular, service.getPopular());
@@ -102,20 +98,20 @@ public class HomeFragment extends Fragment {
 
     private void getMovieGenres() {
         try {
-            GetCategoryDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetCategoryDataService.class);
-            Call<CategoryWrapper> call = service.getCategory();
-            call.enqueue(new Callback<CategoryWrapper>() {
+            GetGenreDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetGenreDataService.class);
+            Call<GenreWrapper> call = service.getGenre();
+            call.enqueue(new Callback<GenreWrapper>() {
                 @Override
-                public void onResponse(Call<CategoryWrapper> call, Response<CategoryWrapper> response) {
+                public void onResponse(Call<GenreWrapper> call, Response<GenreWrapper> response) {
                     if (response.body() != null) {
-                        genreList = response.body().getCategory();
+                        genreList = response.body().getGenre();
                         Log.v("HomeFragment", "SIZE: " + genreList.size());
                     } else
                         showError();
                 }
 
                 @Override
-                public void onFailure(Call<CategoryWrapper> call, Throwable t) {
+                public void onFailure(Call<GenreWrapper> call, Throwable t) {
                     Log.d("Error ", t.getMessage());
                     showError();
                 }
@@ -140,7 +136,7 @@ public class HomeFragment extends Fragment {
 
                         for (Movie m: movieList) {
                             Log.v("Movie: ", m.getTitle());
-                            for (Category c : m.getCategories()) {
+                            for (Genre c : m.getCategories()) {
                                 Log.v("Movie: ", c.getCategories());
                             }
                         }
