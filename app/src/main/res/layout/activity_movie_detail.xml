@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTheme"
-    tools:context=".ui.fragments.MovieDetailFragment">
+    android:background="@color/colorTheme">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -51,7 +50,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/interstellar"
@@ -76,16 +74,29 @@
             app:layout_constraintTop_toBottomOf="@+id/detail_movie_title" />
 
         <TextView
-            android:id="@+id/detail_movie_ratings"
+            android:id="@+id/detail_genre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/roboto_thin"
-            android:text="@string/ratings_interstellar"
+            android:text="@string/genre"
+            android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_movie_ratings"
+            app:layout_constraintTop_toBottomOf="@+id/detail_movie_date" />
+
+        <TextView
+            android:id="@+id/detail_movie_ratings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/roboto_thin"
+            android:text="@string/ratings_interstellar"
+            android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toEndOf="@+id/detail_movie_img"
             app:layout_constraintTop_toBottomOf="@+id/detail_movie_date" />
 
@@ -102,7 +113,7 @@
             android:textColor="@color/colorBlue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_movie_ratings" />
+            app:layout_constraintTop_toBottomOf="@+id/detail_genre" />
 
         <TextView
             android:id="@+id/detail_cast"
@@ -191,7 +202,6 @@
             android:id="@+id/rv_trailer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
@@ -199,5 +209,6 @@
             app:layout_constraintTop_toBottomOf="@+id/detail_trailer">
 
         </androidx.recyclerview.widget.RecyclerView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

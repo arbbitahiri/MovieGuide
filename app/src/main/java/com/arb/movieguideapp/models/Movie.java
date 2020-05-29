@@ -3,6 +3,7 @@ package com.arb.movieguideapp.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Movie implements Serializable {
@@ -13,7 +14,8 @@ public class Movie implements Serializable {
     @SerializedName("overview")
     private String description;
     @SerializedName("genre_ids")
-    private List<Integer> genre;
+    private List<Long> genre;
+    private List<Category> categories;
     @SerializedName("release_date")
     private String releaseDate;
     @SerializedName("vote_average")
@@ -29,7 +31,7 @@ public class Movie implements Serializable {
         this.thumbnail = thumbnail;
     }
 
-    public Movie(int id, String title, String description, List<Integer> genre,
+    public Movie(int id, String title, String description, List<Long> genre,
                  String releaseDate, double voteAverage, String thumbnail, String coverImg) {
         this.id = id;
         this.title = title;
@@ -39,6 +41,7 @@ public class Movie implements Serializable {
         this.voteAverage = voteAverage;
         this.thumbnail = thumbnail;
         this.coverImg = coverImg;
+        this.categories = new ArrayList<>();
     }
 
     public int getId() {
@@ -65,12 +68,20 @@ public class Movie implements Serializable {
         this.description = description;
     }
 
-    public List<Integer> getGenre() {
+    public List<Long> getGenre() {
         return genre;
     }
 
-    public void setGenre(List<Integer> genre) {
+    public void setGenre(List<Long> genre) {
         this.genre = genre;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public String getReleaseDate() {
@@ -101,5 +112,17 @@ public class Movie implements Serializable {
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    public void mapGenres(List<Category> categoryList) {
+        if (this.categories == null)
+            this.categories = new ArrayList<>();
+
+        for (Long l : genre) {
+            for (Category c : categoryList) {
+                if (l.equals(c.getId()))
+                    this.categories.add(c);
+            }
+        }
     }
 }

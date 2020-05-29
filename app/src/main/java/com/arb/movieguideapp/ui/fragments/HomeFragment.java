@@ -26,8 +26,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.arb.movieguideapp.clients.GetCategoryDataService;
+import com.arb.movieguideapp.models.Category;
+import com.arb.movieguideapp.models.wrappers.CategoryWrapper;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
 import com.arb.movieguideapp.R;
+import com.arb.movieguideapp.ui.adapters.CategoryAdapter;
 import com.arb.movieguideapp.ui.adapters.MovieAdapter;
 import com.arb.movieguideapp.ui.adapters.SlideAdapter;
 import com.arb.movieguideapp.clients.GetMovieDataService;
@@ -39,13 +43,15 @@ import com.arb.movieguideapp.utils.RetrofitClientInstance;
 import com.arb.movieguideapp.models.wrappers.SlideWrapper;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    private List<Category> genreList = new ArrayList<>();
     private List<Slide> lstSlides;
 
-    private RecyclerView rvPopular, rvTrending, rvNowPlaying, rvTopRated, rvUpcoming;
+    private RecyclerView rvPopular, rvNowPlaying, rvTopRated, rvUpcoming;
     private ViewPager slidePager;
     private TabLayout indicator;
 
@@ -66,10 +72,10 @@ public class HomeFragment extends Fragment {
 
         GetMovieDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetMovieDataService.class);
 
+        getMovieGenres();
         initViews(view, slidePager, indicator, service.getTopRatedSlide());
 
         initViews(view, rvPopular, R.id.rv_popular, service.getPopular());
-        initViews(view, rvTrending, R.id.rv_trending, service.getLatest());
         initViews(view, rvNowPlaying, R.id.rv_now_playing, service.getNowPlaying());
         initViews(view, rvTopRated, R.id.rv_top_rated, service.getTopRated());
         initViews(view, rvUpcoming, R.id.rv_upcoming, service.getUpcoming());
@@ -94,6 +100,33 @@ public class HomeFragment extends Fragment {
         readDataFromExternalApi(viewPager, tabIndicator, call);
     }
 
+    private void getMovieGenres() {
+        try {
+            GetCategoryDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetCategoryDataService.class);
+            Call<CategoryWrapper> call = service.getCategory();
+            call.enqueue(new Callback<CategoryWrapper>() {
+                @Override
+                public void onResponse(Call<CategoryWrapper> call, Response<CategoryWrapper> response) {
+                    if (response.body() != null) {
+                        genreList = response.body().getCategory();
+                        Log.v("HomeFragment", "SIZE: " + genreList.size());
+                    } else
+                        showError();
+                }
+
+                @Override
+                public void onFailure(Call<CategoryWrapper> call, Throwable t) {
+                    Log.d("Error ", t.getMessage());
+                    showError();
+                }
+            });
+        }
+        catch (Exception e) {
+            Log.d("Error ", e.getMessage());
+            showError();
+        }
+    }
+
     private void readDataFromExternalApi(final RecyclerView recyclerView, Call<MovieWrapper> call) {
         try {
             call.enqueue(new Callback<MovieWrapper>() {
@@ -101,6 +134,17 @@ public class HomeFragment extends Fragment {
                 public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
                     if (response.body() != null) {
                         List<Movie> movieList = response.body().getMovies();
+
+                        for (Movie m : movieList)
+                            m.mapGenres(genreList);
+
+                        for (Movie m: movieList) {
+                            Log.v("Movie: ", m.getTitle());
+                            for (Category c : m.getCategories()) {
+                                Log.v("Movie: ", c.getCategories());
+                            }
+                        }
+
                         movieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
                             @Override
                             public void onMovieClick(Movie movie) {
@@ -113,11 +157,10 @@ public class HomeFragment extends Fragment {
                         });
                         recyclerView.setAdapter(movieAdapter);
                         recyclerView.smoothScrollToPosition(0);
-
                         progressDialog.dismiss();
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(getContext(), "onResponse - something wrong" + response.message(), Toast.LENGTH_LONG).show();
+                        showError();
                     }
 
                     movieAdapter.notifyDataSetChanged();
@@ -128,14 +171,14 @@ public class HomeFragment extends Fragment {
                 public void onFailure(Call<MovieWrapper> call, Throwable t) {
                     progressDialog.dismiss();
                     Log.d("Error ", t.getMessage());
-                    Toast.makeText(getContext(), "Error fetching data!" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    showError();
                 }
             });
         }
         catch (Exception e) {
             progressDialog.dismiss();
             Log.d("Error ", e.getMessage());
-            Toast.makeText(getContext(), "Error fetching data! " + e.toString(), Toast.LENGTH_SHORT).show();
+            showError();
         }
     }
 
@@ -148,11 +191,8 @@ public class HomeFragment extends Fragment {
                         List<Slide> slideList = response.body().getMovies();
                         slideAdapter = new SlideAdapter(slideList);
                         viewPager.setAdapter(slideAdapter);
-
-                        progressDialog.dismiss();
                     } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "onResponse - something wrong" + response.message(), Toast.LENGTH_LONG).show();
+                        showError();
                     }
 
                     tabIndicator.setupWithViewPager(viewPager,true);
@@ -161,21 +201,24 @@ public class HomeFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<SlideWrapper> call, Throwable t) {
-                    progressDialog.dismiss();
                     Log.d("Error ", t.getMessage());
-                    Toast.makeText(getContext(), "Error fetching data!" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    showError();
                 }
             });
         }
         catch (Exception e) {
             progressDialog.dismiss();
             Log.d("Error ", e.getMessage());
-            Toast.makeText(getContext(), "Error fetching data! " + e.toString(), Toast.LENGTH_SHORT).show();
+            showError();
         }
     }
 
     private void initRecycleView(RecyclerView rv) {
         rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rv.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    private void showError() {
+        Toast.makeText(getActivity(), "Please check your internet connection!", Toast.LENGTH_SHORT).show();
     }
 }

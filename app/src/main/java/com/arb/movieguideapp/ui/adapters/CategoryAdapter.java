@@ -18,10 +18,14 @@ import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
 
-    private final CategoryClickListener categoryClickListener;
+    private CategoryClickListener categoryClickListener;
     private final List<Category> mCategory;
 
-    public CategoryAdapter(CategoryClickListener categoryClickListener, List<Category> mCategory) {
+    public CategoryAdapter(List<Category> mCategory) {
+        this.mCategory = mCategory;
+    }
+
+    public CategoryAdapter(List<Category> mCategory, CategoryClickListener categoryClickListener) {
         this.categoryClickListener = categoryClickListener;
         this.mCategory = mCategory;
     }

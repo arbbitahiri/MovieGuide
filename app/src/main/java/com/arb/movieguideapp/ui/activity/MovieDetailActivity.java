@@ -6,12 +6,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -20,13 +22,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.clients.GetCastDataService;
+import com.arb.movieguideapp.clients.GetCategoryDataService;
 import com.arb.movieguideapp.clients.GetMovieTrailerService;
+import com.arb.movieguideapp.listeners.CategoryClickListener;
+import com.arb.movieguideapp.listeners.OnGetGenresCallback;
 import com.arb.movieguideapp.listeners.TrailerClickListener;
 import com.arb.movieguideapp.models.Cast;
+import com.arb.movieguideapp.models.Category;
 import com.arb.movieguideapp.models.Movie;
 import com.arb.movieguideapp.models.MovieTrailer;
 import com.arb.movieguideapp.models.wrappers.CastWrapper;
+import com.arb.movieguideapp.models.wrappers.CategoryWrapper;
 import com.arb.movieguideapp.ui.adapters.CastAdapter;
+import com.arb.movieguideapp.ui.adapters.CategoryAdapter;
 import com.arb.movieguideapp.ui.adapters.TrailerAdapter;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
 import com.arb.movieguideapp.models.wrappers.MovieTrailerWrapper;
@@ -35,6 +43,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,15 +51,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MovieDetailActivity extends AppCompatActivity {
-    private TextView txtTitle, txtRating, txtDate, txtDescription, txtTrailer;
+    private TextView txtTitle, txtRating, txtDate, txtDescription, txtTrailer, txtGenre;
     private ImageView imgPoster, imgCover;
 
+    private CategoryAdapter categoryAdapter;
     private TrailerAdapter mTrailerAdapter;
     private CastAdapter mCastAdapter;
+
     private List<MovieTrailer> mMovieTrailers;
     private List<Cast> mCast;
+    private List<Category> mCategory;
 
-    private RecyclerView mTrailerRecyclerView, mCastRecycleView;
+    private RecyclerView mTrailerRecyclerView, mCastRecycleView, mWTWRecycleView;
 
     private Movie movie;
 
@@ -65,6 +77,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         mCastRecycleView = findViewById(R.id.rv_cast);
         mCastRecycleView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
+        mWTWRecycleView = findViewById(R.id.rv_where_to_watch);
+        mWTWRecycleView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
         mTrailerRecyclerView = findViewById(R.id.rv_trailer);
         mTrailerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mTrailerRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -76,7 +91,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         txtDescription = findViewById(R.id.detail_movie_description);
         imgPoster = findViewById(R.id.detail_movie_img);
         imgCover = findViewById(R.id.detail_movie_cover);
-        txtTrailer = findViewById(R.id.detail_trailer);
+        txtGenre = findViewById(R.id.detail_genre);
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -114,8 +129,25 @@ public class MovieDetailActivity extends AppCompatActivity {
         txtDescription.setText(mMovie.getDescription());
         txtDate.setText(mMovie.getReleaseDate());
 
+        List<String> genreString = new ArrayList<>();
+        if (mMovie.getGenre() != null)  {
+            for (Category genre : movie.getCategories()) {
+                genreString.add(genre.getCategories());
+            }
+        }
+        txtGenre.setText(genreString.toString());
+
         String userRatingText = mMovie.getVoteAverage() + "/10";
         txtRating.setText(userRatingText);
+    }
+
+    private String getGenres(List<String> genreString) {
+        if (movie.getGenre() != null)  {
+            for (Category genre : movie.getCategories()) {
+                genreString.add(genre.getCategories());
+            }
+        }
+        return TextUtils.join(", ", genreString);
     }
 
     private void populateCasts(List<Cast> mCast){
@@ -129,7 +161,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<CastWrapper>() {
             @Override
-            public void onResponse(Call<CastWrapper> call, Response<CastWrapper> response) {
+            public void onResponse(@NonNull Call<CastWrapper> call, Response<CastWrapper> response) {
                 if (response.body() != null) {
                     mCast = response.body().getCast();
                     populateCasts(mCast);
@@ -138,7 +170,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<CastWrapper> call, Throwable t) {
-                Toast.makeText(MovieDetailActivity.this, "Something went wrong" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
     }
@@ -168,7 +200,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MovieTrailerWrapper> call, Throwable t) {
-                Toast.makeText(MovieDetailActivity.this, "Something went wrong" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                showError();
             }
         });
     }
@@ -188,5 +220,9 @@ public class MovieDetailActivity extends AppCompatActivity {
             outState.putSerializable("cast", (Serializable) mCast);
             outState.putSerializable("movie_trailers", (Serializable) mMovieTrailers);
         }
+    }
+
+    private void showError() {
+        Toast.makeText(MovieDetailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
     }
 }

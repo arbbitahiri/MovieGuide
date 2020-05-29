@@ -2,14 +2,24 @@ package com.arb.movieguideapp.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Category {
+import java.io.Serializable;
+
+public class Category implements Serializable {
     @SerializedName("id")
-    private int id;
+    private long id;
     @SerializedName("name")
     private String categories;
 
     public Category(String categories) {
         this.categories = categories;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCategories() {

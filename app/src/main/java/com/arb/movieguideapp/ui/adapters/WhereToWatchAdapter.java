@@ -46,6 +46,9 @@ public class WhereToWatchAdapter extends RecyclerView.Adapter<WhereToWatchAdapte
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            txtTitle = itemView.findViewById(R.id.item_wtw_title);
+            imgWTW = itemView.findViewById(R.id.item_wtw_img);
         }
     }
 }
