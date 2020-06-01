@@ -8,10 +8,10 @@ public class Genre implements Serializable {
     @SerializedName("id")
     private long id;
     @SerializedName("name")
-    private String categories;
+    private String genres;
 
     public Genre(String categories) {
-        this.categories = categories;
+        this.genres = categories;
     }
 
     public long getId() {
@@ -22,11 +22,11 @@ public class Genre implements Serializable {
         this.id = id;
     }
 
-    public String getCategories() {
-        return categories;
+    public String getGenres() {
+        return genres;
     }
 
-    public void setCategories(String categories) {
-        this.categories = categories;
+    public void setGenres(String categories) {
+        this.genres = categories;
     }
 }

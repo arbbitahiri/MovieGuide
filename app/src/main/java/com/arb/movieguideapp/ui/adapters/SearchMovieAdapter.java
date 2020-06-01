@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
+import com.arb.movieguideapp.listeners.MovieClickListener;
 import com.arb.movieguideapp.models.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -19,9 +20,11 @@ import java.util.List;
 public class SearchMovieAdapter extends RecyclerView.Adapter<SearchMovieAdapter.MyViewHolder> {
 
     private List<Movie> movieList;
+    private MovieClickListener movieClickListener;
 
-    public SearchMovieAdapter(List<Movie> movieList) {
+    public SearchMovieAdapter(List<Movie> movieList, MovieClickListener movieClickListener) {
         this.movieList = movieList;
+        this.movieClickListener = movieClickListener;
     }
 
     @NonNull
@@ -34,8 +37,8 @@ public class SearchMovieAdapter extends RecyclerView.Adapter<SearchMovieAdapter.
     @Override
     public void onBindViewHolder(@NonNull SearchMovieAdapter.MyViewHolder holder, int position) {
         Movie movie = movieList.get(position);
-        holder.txtTitle.setText(movie.getTitle());
-        Picasso.get().load(movie.getThumbnail()).into(holder.imgMovie);
+
+        holder.bind(movie, movieClickListener);
     }
 
     @Override
@@ -52,6 +55,20 @@ public class SearchMovieAdapter extends RecyclerView.Adapter<SearchMovieAdapter.
 
             txtTitle = itemView.findViewById(R.id.txtSearchMovie);
             imgMovie = itemView.findViewById(R.id.item_movie_search);
+        }
+
+        public void bind(final Movie movie, final MovieClickListener movieClickListener) {
+            txtTitle.setText(movie.getTitle());
+            Picasso.get()
+                    .load(movie.getThumbnail())
+                    .into(imgMovie);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    movieClickListener.onMovieClick(movie);
+                }
+            });
         }
     }
 }

@@ -86,14 +86,19 @@ public class HomeFragment extends Fragment {
 
         initRecycleView(recyclerView);
 
-        readDataFromExternalApi(recyclerView, call);
+        getMovie(recyclerView, call);
     }
 
     private void initViews(@NonNull View view, ViewPager viewPager, TabLayout tabIndicator, Call<SlideWrapper> call){
         viewPager = view.findViewById(R.id.slider_pager);
         tabIndicator = view.findViewById(R.id.indicator);
 
-        readDataFromExternalApi(viewPager, tabIndicator, call);
+        getMovie(viewPager, tabIndicator, call);
+    }
+
+    private void initRecycleView(RecyclerView rv) {
+        rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rv.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void getMovieGenres() {
@@ -105,7 +110,6 @@ public class HomeFragment extends Fragment {
                 public void onResponse(Call<GenreWrapper> call, Response<GenreWrapper> response) {
                     if (response.body() != null) {
                         genreList = response.body().getGenre();
-                        Log.v("HomeFragment", "SIZE: " + genreList.size());
                     } else
                         showError();
                 }
@@ -123,7 +127,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void readDataFromExternalApi(final RecyclerView recyclerView, Call<MovieWrapper> call) {
+    private void getMovie(final RecyclerView recyclerView, Call<MovieWrapper> call) {
         try {
             call.enqueue(new Callback<MovieWrapper>() {
                 @Override
@@ -134,23 +138,8 @@ public class HomeFragment extends Fragment {
                         for (Movie m : movieList)
                             m.mapGenres(genreList);
 
-                        for (Movie m: movieList) {
-                            Log.v("Movie: ", m.getTitle());
-                            for (Genre c : m.getCategories()) {
-                                Log.v("Movie: ", c.getCategories());
-                            }
-                        }
+                        onClickMovie(movieList);
 
-                        movieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
-                            @Override
-                            public void onMovieClick(Movie movie) {
-                                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("movie", movie);
-                                intent.putExtras(bundle);
-                                startActivity(intent);
-                            }
-                        });
                         recyclerView.setAdapter(movieAdapter);
                         recyclerView.smoothScrollToPosition(0);
                         progressDialog.dismiss();
@@ -178,7 +167,20 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void readDataFromExternalApi(final ViewPager viewPager, final TabLayout tabIndicator, Call<SlideWrapper> call) {
+    private void onClickMovie(List<Movie> movieList) {
+        movieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
+            @Override
+            public void onMovieClick(Movie movie) {
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("movie", movie);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void getMovie(final ViewPager viewPager, final TabLayout tabIndicator, Call<SlideWrapper> call) {
         try {
             call.enqueue(new Callback<SlideWrapper>() {
                 @Override
@@ -207,11 +209,6 @@ public class HomeFragment extends Fragment {
             Log.d("Error ", e.getMessage());
             showError();
         }
-    }
-
-    private void initRecycleView(RecyclerView rv) {
-        rv.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        rv.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void showError() {

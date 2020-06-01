@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,70 +37,69 @@ import com.arb.movieguideapp.models.wrappers.MovieWrapper;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
 import com.arb.movieguideapp.ui.adapters.CategoryAdapter;
 import com.arb.movieguideapp.ui.adapters.MovieAdapter;
+import com.arb.movieguideapp.ui.adapters.SearchMovieAdapter;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
 
-    private RecyclerView rvCategory;
-    private CategoryAdapter categoryAdapter;
-    private List<Movie> movieList;
-    private MovieAdapter movieAdapter;
-    private List<Genre> genreList;
-    private Genre genre;
+    private RecyclerView searchRecyclerView;
+    private SearchMovieAdapter movieAdapter;
+    private List<Genre> genreList = new ArrayList<>();
 
-    private EditText editSearch;
-
-    private AlertDialog progressDialog;
+    private SearchView searchView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        searchView = view.findViewById(R.id.search_movie);
+        searchView.setOnQueryTextListener(this);
+
+        return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // Inflate the layout for this fragment
+        setRetainInstance(true);
+    }
 
-        rvCategory = view.findViewById(R.id.rv_categories);
-        editSearch = view.findViewById(R.id.editSearch);
-
-        String inputMovie = editSearch.toString();
-
-        if (!inputMovie.isEmpty()) {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Loading...");
-            progressDialog.show();
-
-            rvCategory.setLayoutManager(new GridLayoutManager(getActivity(),2));
-            rvCategory.setItemAnimator(new DefaultItemAnimator());
-            if (isNetworkAvailable()) {
-                getMovies(inputMovie);
-                movieAdapter.notifyDataSetChanged();
-            }
-        } else {
-            rvCategory.setLayoutManager(new LinearLayoutManager(getContext()));
-            rvCategory.setItemAnimator(new DefaultItemAnimator());
-
-            rvCategory.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL));
-
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("Loading...");
-            progressDialog.show();
-
+    private void getMovieGenres() {
+        try {
             GetGenreDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetGenreDataService.class);
-            getGenres(rvCategory, service.getGenre());
+            Call<GenreWrapper> call = service.getGenre();
+            call.enqueue(new Callback<GenreWrapper>() {
+                @Override
+                public void onResponse(Call<GenreWrapper> call, Response<GenreWrapper> response) {
+                    if (response.body() != null) {
+                        genreList = response.body().getGenre();
+                    } else
+                        showError();
+                }
+
+                @Override
+                public void onFailure(Call<GenreWrapper> call, Throwable t) {
+                    Log.d("Error ", t.getMessage());
+                    showError();
+                }
+            });
+        }
+        catch (Exception e) {
+            Log.d("Error ", e.getMessage());
+            showError();
         }
     }
 
     private void populateMovies(List<Movie> movieList){
-        movieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
+        movieAdapter = new SearchMovieAdapter(movieList, new MovieClickListener() {
             @Override
             public void onMovieClick(Movie movie) {
                 Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
@@ -109,10 +109,14 @@ public class SearchFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        rvCategory.setAdapter(movieAdapter);
     }
 
-    private void getMovies(String input_movie) {
+    private void getMovies() {
+        searchRecyclerView = getActivity().findViewById(R.id.movie_search_recycler);
+        searchRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        getMovieGenres();
+        String input_movie = searchView.getQuery().toString();
         GetMovieDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetMovieDataService.class);
         Call<MovieWrapper> call = service.getMovie(input_movie);
 
@@ -120,68 +124,34 @@ public class SearchFragment extends Fragment {
             @Override
             public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
                 if (response.body() != null) {
-                    movieList = response.body().getMovies();
+                    List<Movie> movieList = response.body().getMovies();
+                    Log.v("Tag", "Numri i filmave: " + movieList.size());
                     populateMovies(movieList);
+
+                    for (Movie m : movieList)
+                        m.mapGenres(genreList);
+
+                    searchRecyclerView.setAdapter(movieAdapter);
+                    searchRecyclerView.smoothScrollToPosition(0);
                 }
-                progressDialog.dismiss();
+
+                movieAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Call<MovieWrapper> call, Throwable t) {
-                progressDialog.dismiss();
                 showError();
             }
         });
     }
 
-    private void getGenres(final RecyclerView recyclerView, Call<GenreWrapper> call) {
-        try {
-            call.enqueue(new Callback<GenreWrapper>() {
-                @Override
-                public void onResponse(Call<GenreWrapper> call, Response<GenreWrapper> response) {
-                    if (response.body() != null) {
-                        List<Genre> movieList = response.body().getGenre();
-                        categoryAdapter = new CategoryAdapter(movieList, new GenreClickListener() {
-                            @Override
-                            public void onCategoryClick(Genre mGenre) {
-                                getFragment(mGenre.getCategories());
-                            }
-                        });
-                        recyclerView.setAdapter(categoryAdapter);
-                        recyclerView.smoothScrollToPosition(0);
-
-                        progressDialog.dismiss();
-                    } else {
-                        progressDialog.dismiss();
-                        showError();
-                    }
-
-                    categoryAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onFailure(Call<GenreWrapper> call, Throwable t) {
-                    progressDialog.dismiss();
-                    Log.d("Error ", t.getMessage());
-                    showError();
-                }
-            });
-        }
-        catch (Exception e) {
-            progressDialog.dismiss();
-            Log.d("Error ", e.getMessage());
-            showError();
-        }
-    }
-
-    private void getFragment(String categoryName) {
-        getChildFragmentManager()
-                .beginTransaction()
-                .replace(R.id.searchLayout, new MovieGenreFragment(categoryName))
-                .addToBackStack(null)
-                .commit();
-    }
+//    private void getFragment(String categoryName) {
+//        getChildFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.searchLayout, new MovieGenreFragment(categoryName))
+//                .addToBackStack(null)
+//                .commit();
+//    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -192,5 +162,16 @@ public class SearchFragment extends Fragment {
 
     private void showError() {
         Toast.makeText(getActivity(), "Please check your internet connection!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        getMovies();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }

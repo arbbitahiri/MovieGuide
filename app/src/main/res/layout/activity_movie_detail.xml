@@ -143,6 +143,33 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
+            android:id="@+id/detail_crew"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimaryDark"
+            android:fontFamily="@font/roboto_bold"
+            android:padding="16dp"
+            android:text="@string/crew"
+            android:textAllCaps="true"
+            android:textColor="@color/colorTheme"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_cast" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_crew"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_crew">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
             android:id="@+id/detail_where_to_watch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -156,7 +183,7 @@
             android:textColor="@color/colorTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_cast" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_crew" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_where_to_watch"
@@ -193,7 +220,6 @@
             android:text="@string/trailers"
             android:textAllCaps="true"
             android:textColor="@color/colorTheme"
-            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_where_to_watch" />
@@ -203,7 +229,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
-            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_trailer">

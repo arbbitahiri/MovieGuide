@@ -56,7 +56,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         }
 
         public void bind(final Genre genre, final GenreClickListener genreClickListener) {
-            btnCategory.setText(genre.getCategories());
+            btnCategory.setText(genre.getGenres());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
