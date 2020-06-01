@@ -20,8 +20,8 @@ public interface GetMovieDataService {
     @GET("movie/top_rated?api_key=81229d17288cd3c3a979724d4d5c9cae&language=en-US&page=1&region=US")
     Call<MovieWrapper> getTopRated();
 
-    @GET("movie/top_rated?api_key=81229d17288cd3c3a979724d4d5c9cae&language=en-US&page=1&region=US")
-    Call<SlideWrapper> getTopRatedSlide();
+    @GET("trending/movie/day?api_key=81229d17288cd3c3a979724d4d5c9cae")
+    Call<SlideWrapper> getTrendingSlides();
 
     @GET("movie/upcoming?api_key=81229d17288cd3c3a979724d4d5c9cae&language=en-US&page=1&region=us")
     Call<MovieWrapper> getUpcoming();

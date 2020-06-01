@@ -1,6 +1,7 @@
 package com.arb.movieguideapp.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.arb.movieguideapp.R;
+import com.arb.movieguideapp.models.Genre;
 import com.arb.movieguideapp.models.Slide;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SlideAdapter extends PagerAdapter {
@@ -40,7 +43,14 @@ public class SlideAdapter extends PagerAdapter {
                 .load(slide.getThumbnail())
                 .into(imgSlide);
         txtSlide.setText(mSlide.get(position).getTitle());
-        txtRatings.setText(mSlide.get(position).getRatings());
+        List<String> genreString = new ArrayList<>();
+        Log.v("Tag", "Genres: " + slide.getGenre());
+        if (slide.getGenre() != null)  {
+            for (Genre genre : slide.getGenres()) {
+                genreString.add(genre.getGenres());
+            }
+        }
+        txtRatings.setText(genreString.toString());
 
         container.addView(slideLayout);
         return slideLayout;

@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
 
         getMovieGenres();
 
-        initViews(view, slidePager, indicator, service.getTopRatedSlide());
+        initViews(view, slidePager, indicator, service.getTrendingSlides());
 
         initViews(view, rvPopular, R.id.rv_popular, service.getPopular());
         initViews(view, rvNowPlaying, R.id.rv_now_playing, service.getNowPlaying());
@@ -188,6 +188,10 @@ public class HomeFragment extends Fragment {
                     if (response.body() != null) {
                         List<Slide> slideList = response.body().getMovies();
                         slideAdapter = new SlideAdapter(slideList);
+
+                        for (Slide m : slideList)
+                            m.mapGenres(genreList);
+
                         viewPager.setAdapter(slideAdapter);
                     } else {
                         showError();
