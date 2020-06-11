@@ -35,7 +35,11 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.MyViewHolder> 
         Crew crew = mCrew.get(position);
         holder.txtCrew.setText(crew.getName());
         holder.txtJob.setText(crew.getJob());
-        Picasso.get().load(crew.getThumbnail()).into(holder.imgCrew);
+        Picasso.get()
+                .load(crew.getThumbnail())
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.drawable.ic_broken_image_black_24dp)
+                .into(holder.imgCrew);
     }
 
     @Override

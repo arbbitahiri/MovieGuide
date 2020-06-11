@@ -35,7 +35,12 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Cast cast = mCast.get(i);
         myViewHolder.txtCast.setText(cast.getName());
-        Picasso.get().load(cast.getThumbnail()).into(myViewHolder.imgCast);
+        myViewHolder.txtCharacter.setText(cast.getCharacter());
+        Picasso.get()
+                .load(cast.getThumbnail())
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.drawable.ic_broken_image_black_24dp)
+                .into(myViewHolder.imgCast);
     }
 
     @Override
@@ -46,10 +51,12 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgCast;
         private TextView txtCast;
+        private TextView txtCharacter;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             txtCast = itemView.findViewById(R.id.txtCast);
+            txtCharacter = itemView.findViewById(R.id.txtCharacter);
             imgCast = itemView.findViewById(R.id.img_cast);
         }
     }

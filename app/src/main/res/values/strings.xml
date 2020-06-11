@@ -16,7 +16,7 @@
     <string name="movie_detail_zodiac">In the late 1960s and 1970s, fear grips the city of San Francisco as a serial killer called Zodiac stalks its residents. Investigators (Mark Ruffalo, Anthony Edwards) and reporters (Jake Gyllenhaal, Robert Downey Jr.) become obsessed with learning the killer\'s identity and bringing him to justice. Meanwhile, Zodiac claims victim after victim and taunts the authorities with cryptic messages, cyphers and menacing phone calls.</string>
     <string name="movie_detail_irishman">In the 1950s, truck driver Frank Sheeran gets involved with Russell Bufalino and his Pennsylvania crime family. As Sheeran climbs the ranks to become a top hit man, he also goes to work for Jimmy Hoffa — a powerful Teamster tied to organized crime.</string>
     <string name="cast">Cast</string>
-    <string name="where_to_watch">Where To Watch</string>
+    <string name="similar_movies">Similar Movies</string>
     <string name="action">Action</string>
     <string name="adventure">Adventure</string>
     <string name="comedies">Comedies</string>
@@ -88,4 +88,6 @@
     <string name="movies_search">Movies Search</string>
     <string name="crew">Crew</string>
     <string name="job">Job</string>
+    <string name="character">Character</string>
+    <string name="as">AS</string>
 </resources>

@@ -64,6 +64,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
 
         GetMovieDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetMovieDataService.class);
 
@@ -75,13 +78,11 @@ public class HomeFragment extends Fragment {
         initViews(view, rvNowPlaying, R.id.rv_now_playing, service.getNowPlaying());
         initViews(view, rvTopRated, R.id.rv_top_rated, service.getTopRated());
         initViews(view, rvUpcoming, R.id.rv_upcoming, service.getUpcoming());
+
+        progressDialog.dismiss();
     }
 
     private void initViews(@NonNull View view, RecyclerView recyclerView, int recycle, Call<MovieWrapper> call){
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
         recyclerView = view.findViewById(recycle);
 
         initRecycleView(recyclerView);
@@ -142,14 +143,12 @@ public class HomeFragment extends Fragment {
 
                         recyclerView.setAdapter(movieAdapter);
                         recyclerView.smoothScrollToPosition(0);
-                        progressDialog.dismiss();
                     } else {
                         progressDialog.dismiss();
                         showError();
                     }
 
                     movieAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
                 }
 
                 @Override
@@ -198,7 +197,6 @@ public class HomeFragment extends Fragment {
                     }
 
                     tabIndicator.setupWithViewPager(viewPager,true);
-                    progressDialog.dismiss();
                 }
 
                 @Override

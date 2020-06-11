@@ -1,5 +1,6 @@
 package com.arb.movieguideapp.models;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -124,5 +125,10 @@ public class Movie implements Serializable {
                     this.genres.add(c);
             }
         }
+    }
+
+    public void getGenresString() {
+        Gson gson = new Gson();
+        String inputString = gson.toJson(genre);
     }
 }

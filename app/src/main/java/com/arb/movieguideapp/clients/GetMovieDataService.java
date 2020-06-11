@@ -29,5 +29,6 @@ public interface GetMovieDataService {
     @GET("search/movie?api_key=81229d17288cd3c3a979724d4d5c9cae")
     Call<MovieWrapper> getMovie(@Query("query") String movie_name);
 
-    Call<Movie> searchByTitle(String title);
+    @GET("movie/{id}/similar?api_key=81229d17288cd3c3a979724d4d5c9cae&language=en-US&page=1")
+    Call<MovieWrapper> getSimilarMovie(@Path("id") int movieId);
 }
