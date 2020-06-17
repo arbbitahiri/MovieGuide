@@ -32,7 +32,7 @@ public class ChangePasswordFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_change_password, container, false);
+        return inflater.inflate(R.layout.fragment_change_password, container, false);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ChangePasswordFragment extends Fragment {
 
         newPassword = view.findViewById(R.id.txtPassword);
         confirmPassword = view.findViewById(R.id.txtChangePassword);
-        cvChangePassword = view.findViewById(R.id.cv_change_password);
+        cvChangePassword = view.findViewById(R.id.cv_send_feedback);
         dialog = new ProgressDialog(getActivity());
 
         cvChangePassword.setOnClickListener(new View.OnClickListener() {
@@ -70,11 +70,11 @@ public class ChangePasswordFragment extends Fragment {
                                                 dialog.dismiss();
                                                 Toast.makeText(getActivity(),
                                                         "Your password has been changed", Toast.LENGTH_SHORT).show();
-
-                                                mFirebaseAuth.signOut();
-                                                finishActivity();
-
-                                                startActivity(new Intent(getActivity(), LoginActivity.class));
+//
+//                                                mFirebaseAuth.signOut();
+//
+//                                                finishActivity();
+//                                                startActivity(new Intent(getActivity(), LoginActivity.class));
                                             }
                                             else {
                                                 dialog.dismiss();

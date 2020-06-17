@@ -89,5 +89,8 @@
     <string name="crew">Crew</string>
     <string name="job">Job</string>
     <string name="character">Character</string>
-    <string name="as">AS</string>
+    <string name="as">as</string>
+    <string name="send_us_feedback">Send us Feedback</string>
+    <string name="write_down_your_feedback">Write down your feedback!</string>
+    <string name="send">Send</string>
 </resources>

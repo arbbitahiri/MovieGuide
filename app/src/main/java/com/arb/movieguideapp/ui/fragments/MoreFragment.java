@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +22,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.arb.movieguideapp.login.LoginActivity;
@@ -61,15 +64,15 @@ public class MoreFragment extends Fragment {
         txtDeactivateAccount = view.findViewById(R.id.txt_cancel_account);
 
         progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Fetching data!");
+        progressDialog.show();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-
         user = mFirebaseAuth.getCurrentUser();
 
         if (user != null){
             if (!user.isEmailVerified()) {
                 txtVerify.setVisibility(View.VISIBLE);
-
                 txtVerify.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -87,6 +90,7 @@ public class MoreFragment extends Fragment {
                     }
                 });
             }
+            progressDialog.dismiss();
         }
 
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -98,7 +102,8 @@ public class MoreFragment extends Fragment {
                     String message = "Go search movies...";
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(),
                             "personal notifications")
-                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setSmallIcon(R.drawable.ic_baseline_notifications_active_24)
+                            .setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark))
                             .setContentTitle(title)
                             .setContentText(message)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
@@ -118,7 +123,7 @@ public class MoreFragment extends Fragment {
         txtChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                swapFragment(new ChangePasswordFragment());
+                getFragment(new ChangePasswordFragment());
             }
         });
 
@@ -176,17 +181,6 @@ public class MoreFragment extends Fragment {
         });
     }
 
-    private void displayNotification(View view) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "personal notifications");
-        builder.setSmallIcon(R.mipmap.ic_launcher);
-        builder.setContentTitle("Movie Guide Notification");
-        builder.setContentText("Go search movies...");
-        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getActivity());
-        managerCompat.notify(001, builder.build());
-    }
-
     private void getFragment(Fragment fragment) {
         getChildFragmentManager()
                 .beginTransaction()
@@ -196,11 +190,16 @@ public class MoreFragment extends Fragment {
     }
 
     private void swapFragment(Fragment fragment){
-        getParentFragmentManager()
-                .beginTransaction()
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
                 .add(R.id.more_fragment, fragment)
-                .addToBackStack(null)
+//                .addToBackStack(null)
                 .commit();
+//        getChildFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.more_fragment, fragment)
+//                .addToBackStack(null)
+//                .commit();
     }
 
     private void finishActivity() {
