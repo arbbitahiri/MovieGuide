@@ -184,7 +184,7 @@ public class HomeFragment extends Fragment {
         movieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
             @Override
             public void onMovieClick(Movie movie) {
-                vibrator.vibrate(10);
+                vibrator.vibrate(100);
                 Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movie", movie);

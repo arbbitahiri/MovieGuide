@@ -1,6 +1,9 @@
 package com.arb.movieguideapp.ui.fragments;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.arb.movieguideapp.login.LoginActivity;
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.ui.PageViewModel;
+import com.arb.movieguideapp.ui.activity.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -98,6 +102,15 @@ public class MoreFragment extends Fragment {
                             .setContentTitle(title)
                             .setContentText(message)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(getContext(),
+                            0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    builder.setContentIntent(pendingIntent);
+
+                    NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(0, builder.build());
                 }
             }
         });
