@@ -41,6 +41,8 @@ public class SlideAdapter extends PagerAdapter {
 
         Picasso.get()
                 .load(slide.getThumbnail())
+                .placeholder(R.drawable.ic_baseline_blur_on_24)
+                .error(R.drawable.ic_broken_image_black_24dp)
                 .into(imgSlide);
         txtSlide.setText(mSlide.get(position).getTitle());
         List<String> genreString = new ArrayList<>();

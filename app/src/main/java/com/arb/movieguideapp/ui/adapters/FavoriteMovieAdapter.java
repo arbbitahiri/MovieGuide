@@ -11,22 +11,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
+import com.arb.movieguideapp.listeners.MovieClickListener;
 import com.arb.movieguideapp.models.Movie;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.MyViewHolder> {
 
-    private Context mContext;
-    private List<Movie> mMovies;
+    private List<Movie> movieList;
+    private MovieClickListener movieClickListener;
 
-    public FavoriteMovieAdapter(List<Movie> mMovies) {
-        this.mMovies = mMovies;
+    public FavoriteMovieAdapter(List<Movie> movieList) {
+        this.movieList = movieList;
     }
 
-    public FavoriteMovieAdapter(Context mContext, List<Movie> mMovies) {
-        this.mContext = mContext;
-        this.mMovies = mMovies;
+    public FavoriteMovieAdapter(List<Movie> movieList, MovieClickListener movieClickListener) {
+        this.movieList = movieList;
+        this.movieClickListener = movieClickListener;
     }
 
     @NonNull
@@ -38,20 +40,18 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-//        myViewHolder.txtTitle.setText(mMovies.get(i).getTitle());
-//        myViewHolder.txtGenre.setText(mMovies.get(i).getGenre());
-//        myViewHolder.txtRatings.setText(mMovies.get(i).getRatings());
-//        Picasso.get().load(mMovies.get(i).get_thumbnail()).into(myViewHolder.imgMovie);
+        Movie movie = movieList.get(i);
+
     }
 
     @Override
     public int getItemCount() {
-        return mMovies.size();
+        return null != movieList ? movieList.size() : 0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView txtTitle;
-        private TextView txtGenre;
+//        private TextView txtGenre;
         private TextView txtRatings;
         private ImageView imgMovie;
 
@@ -59,9 +59,25 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
             super(itemView);
 
             txtTitle = itemView.findViewById(R.id.movie_title);
-            txtGenre = itemView.findViewById(R.id.year_genre_time);
+//            txtGenre = itemView.findViewById(R.id.year_genre_time);
             txtRatings = itemView.findViewById(R.id.ratings);
             imgMovie = itemView.findViewById(R.id.item_movie_img_f);
+        }
+
+        public void bind(final Movie movie, final MovieClickListener movieClickListener) {
+            txtTitle.setText(movie.getTitle());
+            String userRatingText = movie.getVoteAverage() + "/10";
+            txtRatings.setText(userRatingText);
+            Picasso.get()
+                    .load(movie.getThumbnail())
+                    .into(imgMovie);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    movieClickListener.onMovieClick(movie);
+                }
+            });
         }
     }
 }

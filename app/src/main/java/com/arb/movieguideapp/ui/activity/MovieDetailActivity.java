@@ -87,7 +87,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private AlertDialog progressDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
@@ -132,8 +132,13 @@ public class MovieDetailActivity extends AppCompatActivity {
             if (bundle != null) {
                 movie = (Movie) bundle.getSerializable("movie");
                 if (movie != null) {
+                    favoriteDbHelper = new FavoriteDbHelper(MovieDetailActivity.this);
+                    if (favoriteDbHelper.checkIfMovieExists(movie.getId())) {
+                        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_check_24));
+                    } else {
+                        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+                    }
                     populateActivity(movie);
-                    getMovie(movie);
                     if(isNetworkAvailable()) {
                         getCasts(movie.getId());
                         getCrew(movie.getId());
@@ -145,8 +150,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
 
         favoriteButton.setOnClickListener(new View.OnClickListener() {
-
-            boolean flag = true;
             @Override
             public void onClick(final View view) {
                 ObjectAnimator.ofFloat(favoriteButton, "rotation", 0f, 360f).setDuration(800).start();
@@ -154,21 +157,28 @@ public class MovieDetailActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        int movie_id = getIntent().getExtras().getInt("id");
-                        if (flag) {
-                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_check_24));
-                            saveFavorite();
-                            Snackbar.make(view, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
-                            flag = false;
-                        } else {
-                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+                        if (savedInstanceState == null) {
+                            Intent intent = getIntent();
+                            Bundle bundle = intent.getExtras();
+                            if (bundle != null) {
+                                favoriteDbHelper = new FavoriteDbHelper(MovieDetailActivity.this);
+                                movie = (Movie) bundle.getSerializable("movie");
+                                if (movie != null) {
+                                    if (!favoriteDbHelper.checkIfMovieExists(movie.getId())) {
+                                        Log.v("TAG", movie.getId()+"");
+                                        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_check_24));
+                                        saveFavorite();
+                                        Snackbar.make(view, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
+                                    } else {
+                                        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
 
+                                        favoriteDbHelper = new FavoriteDbHelper(MovieDetailActivity.this);
+                                        favoriteDbHelper.deleteFavorite(movie.getId());
 
-                            favoriteDbHelper = new FavoriteDbHelper(MovieDetailActivity.this);
-                            favoriteDbHelper.deleteFavorite(movie_id);
-
-                            Snackbar.make(view, "Removed from Favorites", Snackbar.LENGTH_SHORT).show();
-                            flag = true;
+                                        Snackbar.make(view, "Removed from Favorites", Snackbar.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
                         }
                     }
                 }, 400);
@@ -192,16 +202,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 //                }
 //            }
 //        }
-    }
-
-    private void getMovie(Movie mMovie) {
-        movieId = mMovie.getId();
-        movieTitle = mMovie.getTitle();
-        movieVoteAverage = mMovie.getVoteAverage();
-        moviePosterPath = mMovie.getThumbnail();
-        movieDescription = mMovie.getDescription();
-        movieBackdropPath = mMovie.getCoverImg();
-        movieReleaseDate = mMovie.getReleaseDate();
     }
 
     private void populateActivity(Movie mMovie) {
@@ -365,14 +365,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         showError();
                     }
-
-                    mMovieAdapter.notifyDataSetChanged(); //errori
+//
+//                    mMovieAdapter.notifyDataSetChanged(); //errori
                 }
 
                 @Override
                 public void onFailure(Call<MovieWrapper> call, Throwable t) {
-                    progressDialog.dismiss();
-                    Log.d("Error ", t.getMessage());
+                    progressDialog.dismiss();                    Log.d("Error ", t.getMessage());
                     showError();
                 }
             });

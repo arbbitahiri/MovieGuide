@@ -38,7 +38,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.MyViewHolder> 
         myViewHolder.txtCharacter.setText(cast.getCharacter());
         Picasso.get()
                 .load(cast.getThumbnail())
-                .placeholder(R.mipmap.ic_launcher)
+                .placeholder(R.drawable.ic_baseline_blur_on_24)
                 .error(R.drawable.ic_broken_image_black_24dp)
                 .into(myViewHolder.imgCast);
     }

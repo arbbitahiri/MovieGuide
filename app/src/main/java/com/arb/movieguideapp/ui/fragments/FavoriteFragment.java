@@ -36,7 +36,7 @@ public class FavoriteFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         RecyclerView rvFavorites = view.findViewById(R.id.favorite_recycler);
-        favoriteMovieAdapter = new FavoriteMovieAdapter(getContext(), movieList);
+        favoriteMovieAdapter = new FavoriteMovieAdapter(movieList);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvFavorites.setLayoutManager(layoutManager);
@@ -45,51 +45,5 @@ public class FavoriteFragment extends Fragment {
         rvFavorites.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL));
 
         rvFavorites.setAdapter(favoriteMovieAdapter);
-
-//        populateMovieData();
     }
-//
-//    private void populateMovieData() {
-//        Movie movie = new Movie("Avengers: Endgame", "2019 ‧ Action/Sci-fi ‧ 3h 2m",
-//                "8.4 IMDb | 94% Rotten Tomatoes", R.drawable.z_avengersendgame);
-//        movieList.add(movie);
-//
-//        movie = new Movie("The Dark Knight", "2008 ‧ Action/Adventure ‧ 2h 32m",
-//                "9 IMDb | 94% Rotten Tomatoes", R.drawable.z_darkknight);
-//        movieList.add(movie);
-//
-//        movie = new Movie("Inception", "2010 ‧ Thriller/Sci-fi ‧ 2h 28m",
-//                "8.8 IMDb | 87% Rotten Tomatoes", R.drawable.z_inception);
-//        movieList.add(movie);
-//
-//        movie = new Movie("Interstellar", "2014 ‧ Sci-fi/Adventure ‧ 2h 49m",
-//                "8.6 IMDb | 72% Rotten Tomatoes", R.drawable.z_interstellar);
-//        movieList.add(movie);
-//
-//        movie = new Movie("Once Upon a Time in Hollywood", "2019 ‧ Comedy/Drama ‧ 2h 40m",
-//                "7.7 IMDb | 85% Rotten Tomatoes", R.drawable.z_ouatih);
-//        movieList.add(movie);
-//
-//        movie = new Movie("Dark Waters", "2019 ‧ Drama/Thriller ‧ 2h 6m",
-//                "7.6 IMDb | 90% Rotten Tomatoes", R.drawable.z_darkwaters);
-//        movieList.add(movie);
-//
-//        movie = new Movie("The Departed", "2006 ‧ Thriller/Crime ‧ 2h 31m",
-//                "8.5 IMDb | 91% Rotten Tomatoes", R.drawable.z_thedeparted);
-//        movieList.add(movie);
-//
-//        movie = new Movie("The Godfather", "1972 ‧ Crime/Crime ‧ 2h 58m",
-//                "9.2 IMDb | 98% Rotten Tomatoes", R.drawable.z_thegodfather);
-//        movieList.add(movie);
-//
-//        movie = new Movie("The Irishman", "2019 ‧ Crime/Drama ‧ 3h 30m",
-//                "7.9 IMDb | 96% Rotten Tomatoes", R.drawable.z_theirishman);
-//        movieList.add(movie);
-//
-//        movie = new Movie("Zodiac", "2007 ‧ Thriller/Mystery ‧ 2h 42m",
-//                "7.7 IMDb | 89% Rotten Tomatoes", R.drawable.z_zodiac);
-//        movieList.add(movie);
-//
-//        favoriteMovieAdapter.notifyDataSetChanged();
-//    }
 }

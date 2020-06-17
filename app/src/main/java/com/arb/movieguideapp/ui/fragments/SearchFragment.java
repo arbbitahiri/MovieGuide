@@ -1,7 +1,5 @@
 package com.arb.movieguideapp.ui.fragments;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,8 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -20,23 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.clients.GetGenreDataService;
 import com.arb.movieguideapp.clients.GetMovieDataService;
-import com.arb.movieguideapp.listeners.GenreClickListener;
 import com.arb.movieguideapp.listeners.MovieClickListener;
 import com.arb.movieguideapp.models.Genre;
 import com.arb.movieguideapp.models.Movie;
 import com.arb.movieguideapp.models.wrappers.GenreWrapper;
 import com.arb.movieguideapp.models.wrappers.MovieWrapper;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
-import com.arb.movieguideapp.ui.adapters.CategoryAdapter;
-import com.arb.movieguideapp.ui.adapters.MovieAdapter;
 import com.arb.movieguideapp.ui.adapters.SearchMovieAdapter;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
 

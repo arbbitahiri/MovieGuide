@@ -61,6 +61,8 @@ public class SearchMovieAdapter extends RecyclerView.Adapter<SearchMovieAdapter.
             txtTitle.setText(movie.getTitle());
             Picasso.get()
                     .load(movie.getThumbnail())
+                    .placeholder(R.drawable.ic_baseline_blur_on_24)
+                    .error(R.drawable.ic_broken_image_black_24dp)
                     .into(imgMovie);
 
             itemView.setOnClickListener(new View.OnClickListener() {

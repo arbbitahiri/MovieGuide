@@ -93,7 +93,21 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                Movie movie = new Movie();
+//                movie.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID))));
+//                movie.setTitle(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_TITLE)));
+//                movie.setVoteAverage(Double.parseDouble(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_VOTE_AVERAGE))));
+//                movie.setThumbnail(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_POSTER_PATH)));
+//                movie.setDescription(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_DESCRIPTION)));
+//                movie.setCoverImg(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_BACKDROP_PATH)));
+//                movie.setReleaseDate(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE)));
+//
+//                favoriteList.add(movie);
+//            } while (cursor.moveToNext());
+//        }
         Movie movie = new Movie();
         movie.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID))));
         movie.setTitle(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_TITLE)));
@@ -111,12 +125,13 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
         return favoriteList;
     }
 
-    public boolean CheckIfMovieExists(int movie_Id) {
+    public boolean checkIfMovieExists(int movie_Id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + FavoriteContract.FavoriteEntry.TABLE_NAME +
                 " WHERE " + FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID + "=" + movie_Id;
 
+        Log.v("TAG", selectQuery);
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.getCount() <= 0) {
             cursor.close();
