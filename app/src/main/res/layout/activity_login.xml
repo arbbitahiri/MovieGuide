@@ -143,4 +143,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPassword"
         app:srcCompat="@drawable/ic_lock_black_24dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+<!--TODO TextInputLayout-->

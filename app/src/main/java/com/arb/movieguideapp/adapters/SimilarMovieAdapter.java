@@ -1,13 +1,11 @@
-package com.arb.movieguideapp.ui.adapters;
+package com.arb.movieguideapp.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb.movieguideapp.R;
@@ -17,53 +15,54 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class SearchMovieAdapter extends RecyclerView.Adapter<SearchMovieAdapter.MyViewHolder> {
+public class SimilarMovieAdapter  extends RecyclerView.Adapter<SimilarMovieAdapter.MyViewHolder> {
 
-    private List<Movie> movieList;
+    private List<Movie> mMovies;
     private MovieClickListener movieClickListener;
 
-    public SearchMovieAdapter(List<Movie> movieList, MovieClickListener movieClickListener) {
-        this.movieList = movieList;
+    public SimilarMovieAdapter(List<Movie> mMovies, MovieClickListener movieClickListener) {
+        this.mMovies = mMovies;
         this.movieClickListener = movieClickListener;
+    }
+
+    public SimilarMovieAdapter(List<Movie> mMovies) {
+        this.mMovies = mMovies;
     }
 
     @NonNull
     @Override
-    public SearchMovieAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_search, parent, false);
+    public SimilarMovieAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_movie, viewGroup, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchMovieAdapter.MyViewHolder holder, int position) {
-        Movie movie = movieList.get(position);
+    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+        Movie movie = mMovies.get(i);
 
-        holder.bind(movie, movieClickListener);
+        myViewHolder.bind(movie, movieClickListener);
     }
 
     @Override
     public int getItemCount() {
-        return null != movieList ? movieList.size() : 0;
+        return null != mMovies ? mMovies.size() : 0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imgMovie;
-        private TextView txtTitle;
+        private ImageView imgPoster;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            txtTitle = itemView.findViewById(R.id.txtSearchMovie);
-            imgMovie = itemView.findViewById(R.id.item_movie_search);
+            imgPoster = itemView.findViewById(R.id.item_movie_img);
         }
 
         public void bind(final Movie movie, final MovieClickListener movieClickListener) {
-            txtTitle.setText(movie.getTitle());
             Picasso.get()
                     .load(movie.getThumbnail())
                     .placeholder(R.drawable.ic_baseline_blur_on_24)
                     .error(R.drawable.ic_broken_image_black_24dp)
-                    .into(imgMovie);
+                    .into(imgPoster);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

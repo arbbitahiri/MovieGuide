@@ -1,4 +1,4 @@
-package com.arb.movieguideapp.ui.adapters;
+package com.arb.movieguideapp.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,23 +15,23 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class SimilarMovieAdapter  extends RecyclerView.Adapter<SimilarMovieAdapter.MyViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
 
     private List<Movie> mMovies;
     private MovieClickListener movieClickListener;
 
-    public SimilarMovieAdapter(List<Movie> mMovies, MovieClickListener movieClickListener) {
+    public MovieAdapter(List<Movie> mMovies, MovieClickListener movieClickListener) {
         this.mMovies = mMovies;
         this.movieClickListener = movieClickListener;
     }
 
-    public SimilarMovieAdapter(List<Movie> mMovies) {
+    public MovieAdapter(List<Movie> mMovies) {
         this.mMovies = mMovies;
     }
 
     @NonNull
     @Override
-    public SimilarMovieAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MovieAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_movie, viewGroup, false);
         return new MyViewHolder(view);
     }

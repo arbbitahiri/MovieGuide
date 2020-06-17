@@ -2,13 +2,14 @@ package com.arb.movieguideapp.ui.fragments;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import android.os.SystemClock;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,10 +28,11 @@ import androidx.viewpager.widget.ViewPager;
 import com.arb.movieguideapp.clients.GetGenreDataService;
 import com.arb.movieguideapp.models.Genre;
 import com.arb.movieguideapp.models.wrappers.GenreWrapper;
+import com.arb.movieguideapp.ui.PageViewModel;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
 import com.arb.movieguideapp.R;
-import com.arb.movieguideapp.ui.adapters.MovieAdapter;
-import com.arb.movieguideapp.ui.adapters.SlideAdapter;
+import com.arb.movieguideapp.adapters.MovieAdapter;
+import com.arb.movieguideapp.adapters.SlideAdapter;
 import com.arb.movieguideapp.clients.GetMovieDataService;
 import com.arb.movieguideapp.listeners.MovieClickListener;
 import com.arb.movieguideapp.models.Movie;
@@ -55,6 +58,15 @@ public class HomeFragment extends Fragment {
     private SlideAdapter slideAdapter;
 
     private AlertDialog progressDialog;
+
+    private PageViewModel pageViewModel;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        pageViewModel = new ViewModelProvider(getActivity()).get(PageViewModel.class);
+    }
 
     @Nullable
     @Override
@@ -168,9 +180,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void onClickMovie(List<Movie> movieList) {
+        final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         movieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
             @Override
             public void onMovieClick(Movie movie) {
+                vibrator.vibrate(10);
                 Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movie", movie);

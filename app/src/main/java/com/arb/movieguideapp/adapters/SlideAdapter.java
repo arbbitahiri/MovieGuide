@@ -1,4 +1,4 @@
-package com.arb.movieguideapp.ui.adapters;
+package com.arb.movieguideapp.adapters;
 
 import android.content.Context;
 import android.util.Log;

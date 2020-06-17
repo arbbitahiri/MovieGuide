@@ -8,18 +8,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.arb.movieguideapp.login.LoginActivity;
 import com.arb.movieguideapp.R;
-import com.arb.movieguideapp.ui.activity.ChangePasswordActivity;
+import com.arb.movieguideapp.ui.PageViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +34,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class MoreFragment extends Fragment {
 
     private TextView txtSignOut, txtVerify, txtChangePassword, txtDeactivateAccount;
+    private Switch notificationSwitch;
+
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser user;
     private ProgressDialog progressDialog;
@@ -44,6 +50,7 @@ public class MoreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        notificationSwitch = view.findViewById(R.id.switch_notification);
         txtSignOut = view.findViewById(R.id.txt_sign_out);
         txtVerify = view.findViewById(R.id.txtVerify);
         txtChangePassword = view.findViewById(R.id.txt_update_password);
@@ -78,11 +85,27 @@ public class MoreFragment extends Fragment {
             }
         }
 
+        notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    Log.v("TAG", "Checked");
+                    String title = "Movie Guide Notification";
+                    String message = "Go search movies...";
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(),
+                            "personal notifications")
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle(title)
+                            .setContentText(message)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                }
+            }
+        });
+
         txtChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 swapFragment(new ChangePasswordFragment());
-                Log.v("TAG", "Ka hi");
             }
         });
 
@@ -140,6 +163,17 @@ public class MoreFragment extends Fragment {
         });
     }
 
+    private void displayNotification(View view) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "personal notifications");
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setContentTitle("Movie Guide Notification");
+        builder.setContentText("Go search movies...");
+        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getActivity());
+        managerCompat.notify(001, builder.build());
+    }
+
     private void getFragment(Fragment fragment) {
         getChildFragmentManager()
                 .beginTransaction()
@@ -151,7 +185,7 @@ public class MoreFragment extends Fragment {
     private void swapFragment(Fragment fragment){
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.more_fragment, fragment)
+                .add(R.id.more_fragment, fragment)
                 .addToBackStack(null)
                 .commit();
     }

@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,8 +29,9 @@ import com.arb.movieguideapp.models.Genre;
 import com.arb.movieguideapp.models.Movie;
 import com.arb.movieguideapp.models.wrappers.GenreWrapper;
 import com.arb.movieguideapp.models.wrappers.MovieWrapper;
+import com.arb.movieguideapp.ui.PageViewModel;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
-import com.arb.movieguideapp.ui.adapters.SearchMovieAdapter;
+import com.arb.movieguideapp.adapters.SearchMovieAdapter;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
 
 import java.util.ArrayList;
@@ -43,8 +46,16 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private RecyclerView searchRecyclerView;
     private SearchMovieAdapter movieAdapter;
     private List<Genre> genreList = new ArrayList<>();
+    private PageViewModel pageViewModel;
 
     private SearchView searchView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        pageViewModel = new ViewModelProvider(getActivity()).get(PageViewModel.class);
+    }
 
     @Nullable
     @Override

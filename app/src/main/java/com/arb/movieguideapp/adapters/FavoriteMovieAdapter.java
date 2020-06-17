@@ -1,7 +1,6 @@
-package com.arb.movieguideapp.ui.adapters;
+package com.arb.movieguideapp.adapters;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
