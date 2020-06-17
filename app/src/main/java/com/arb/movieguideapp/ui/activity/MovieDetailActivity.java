@@ -60,7 +60,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MovieDetailActivity extends AppCompatActivity {
-    private TextView txtTitle, txtRating, txtDate, txtDescription, txtTrailer, txtGenre, txtCrew, txtSimilarMovies;
+    private TextView txtTitle, txtRating, txtDate, txtDescription, txtTrailer, txtGenre, txtCrew, txtCast, txtSimilarMovies;
     private ImageView imgPoster, imgCover;
     private FloatingActionButton favoriteButton;
 
@@ -122,6 +122,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         imgCover = findViewById(R.id.detail_movie_cover);
         txtGenre = findViewById(R.id.detail_genre);
         txtTrailer = findViewById(R.id.detail_trailer);
+        txtCast = findViewById(R.id.detail_cast);
         txtCrew = findViewById(R.id.detail_crew);
         txtSimilarMovies = findViewById(R.id.detail_similar_movies);
         favoriteButton = findViewById(R.id.addFavorites);
@@ -168,14 +169,14 @@ public class MovieDetailActivity extends AppCompatActivity {
                                         Log.v("TAG", movie.getId()+"");
                                         favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_check_24));
                                         saveFavorite();
-                                        Snackbar.make(view, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(view, movie.getTitle() + " added to favorites!", Snackbar.LENGTH_SHORT).show();
                                     } else {
                                         favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
 
                                         favoriteDbHelper = new FavoriteDbHelper(MovieDetailActivity.this);
                                         favoriteDbHelper.deleteFavorite(movie.getId());
 
-                                        Snackbar.make(view, "Removed from Favorites", Snackbar.LENGTH_SHORT).show();
+                                        Snackbar.make(view, movie.getTitle() + " removed from favorites!", Snackbar.LENGTH_SHORT).show();
                                     }
                                 }
                             }
@@ -184,24 +185,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                 }, 400);
             }
         });
-//        else {
-//            movie = (Movie) savedInstanceState.getSerializable("movie");
-//            if (movie != null) {
-//                populateActivity(movie);
-//                if(isNetworkAvailable()) {
-//                    mMovieTrailers = (List<MovieTrailer>) savedInstanceState.getSerializable("movie_trailers");
-//                    mCast = (List<Cast>) savedInstanceState.getSerializable("cast");
-//                    mCrew = (List<Crew>) savedInstanceState.getSerializable("crew");
-//                    mMovie = (List<Movie>) savedInstanceState.getSerializable("movie");
-//                    if (mMovieTrailers != null) {
-//                        populateCasts(mCast);
-//                        populateCrew(mCrew);
-//                        populateTrailers(mMovieTrailers);
-//                        populateSimilarMovies(mMovie);
-//                    }
-//                }
-//            }
-//        }
     }
 
     private void populateActivity(Movie mMovie) {
@@ -238,9 +221,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         favorite.setId(movieId);
         favorite.setTitle(movieTitle);
         favorite.setVoteAverage(movieVoteAverage);
-        favorite.setThumbnail(moviePosterPath);
+        favorite.setThumbnailSQL(moviePosterPath);
         favorite.setDescription(movieDescription);
-        favorite.setCoverImg(movieBackdropPath);
+        favorite.setCoverImgSQL(movieBackdropPath);
         favorite.setReleaseDate(movieReleaseDate);
 
         favoriteDbHelper.addFavorite(favorite);
@@ -248,6 +231,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private void populateCasts(List<Cast> mCast){
         if (mCast.size() > 0) {
+            txtCast.setVisibility(View.VISIBLE);
+            mCastRecycleView.setVisibility(View.VISIBLE);
             mCastAdapter = new CastAdapter(mCast);
             mCastRecycleView.setAdapter(mCastAdapter);
         }
@@ -366,12 +351,13 @@ public class MovieDetailActivity extends AppCompatActivity {
                         showError();
                     }
 //
-//                    mMovieAdapter.notifyDataSetChanged(); //errori
+//                    mMovieAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onFailure(Call<MovieWrapper> call, Throwable t) {
-                    progressDialog.dismiss();                    Log.d("Error ", t.getMessage());
+                    progressDialog.dismiss();
+                    Log.d("Error ", t.getMessage());
                     showError();
                 }
             });

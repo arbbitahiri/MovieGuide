@@ -115,6 +115,20 @@ public class Movie implements Serializable {
         this.voteAverage = voteAverage;
     }
 
+    public String getThumbnailSQL() { return thumbnail; }
+
+    public void setThumbnailSQL(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getCoverImgSQL() {
+        return coverImg;
+    }
+
+    public void setCoverImgSQL(String coverImg) {
+        this.coverImg = coverImg;
+    }
+
     public void mapGenres(List<Genre> genreList) {
         if (this.genres == null)
             this.genres = new ArrayList<>();

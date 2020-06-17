@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/item_movie_search"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="275dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/movie"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/raleway_semibold"
         android:text="@string/movies_search"
