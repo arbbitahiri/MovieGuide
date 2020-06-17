@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.arb.movieguideapp.login.LoginActivity;
 import com.arb.movieguideapp.R;
+import com.arb.movieguideapp.ui.activity.ChangePasswordActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,32 +55,34 @@ public class MoreFragment extends Fragment {
 
         user = mFirebaseAuth.getCurrentUser();
 
-        assert user != null;
-        if (!user.isEmailVerified()) {
-            txtVerify.setVisibility(View.VISIBLE);
+        if (user != null){
+            if (!user.isEmailVerified()) {
+                txtVerify.setVisibility(View.VISIBLE);
 
-            txtVerify.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getActivity(), "A verification email has been sent", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "An error occurred", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
-            });
+                txtVerify.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getActivity(), "A verification email has been sent", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getActivity(), "An error occurred", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
         }
 
         txtChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragment(new ChangePasswordFragment());
+                swapFragment(new ChangePasswordFragment());
+                Log.v("TAG", "Ka hi");
             }
         });
 
@@ -138,7 +143,15 @@ public class MoreFragment extends Fragment {
     private void getFragment(Fragment fragment) {
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.searchLayout, fragment)
+                .replace(R.id.more_fragment, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void swapFragment(Fragment fragment){
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.more_fragment, fragment)
                 .addToBackStack(null)
                 .commit();
     }

@@ -7,7 +7,8 @@
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorTheme"
-    tools:context=".ui.fragments.SearchFragment">
+    tools:context=".ui.fragments.SearchFragment"
+    android:id="@+id/more_fragment">
 
     <TextView
         android:id="@+id/txtlogo"

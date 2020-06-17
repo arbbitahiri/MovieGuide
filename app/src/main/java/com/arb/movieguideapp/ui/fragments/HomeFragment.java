@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,9 +65,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
 
         GetMovieDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetMovieDataService.class);
 
@@ -78,16 +76,20 @@ public class HomeFragment extends Fragment {
         initViews(view, rvNowPlaying, R.id.rv_now_playing, service.getNowPlaying());
         initViews(view, rvTopRated, R.id.rv_top_rated, service.getTopRated());
         initViews(view, rvUpcoming, R.id.rv_upcoming, service.getUpcoming());
-
-        progressDialog.dismiss();
     }
 
     private void initViews(@NonNull View view, RecyclerView recyclerView, int recycle, Call<MovieWrapper> call){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
         recyclerView = view.findViewById(recycle);
 
         initRecycleView(recyclerView);
 
         getMovie(recyclerView, call);
+
+        progressDialog.dismiss();
     }
 
     private void initViews(@NonNull View view, ViewPager viewPager, TabLayout tabIndicator, Call<SlideWrapper> call){

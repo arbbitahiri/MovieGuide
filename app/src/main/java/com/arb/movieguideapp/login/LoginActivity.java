@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (!task.isSuccessful())
-                                        Snackbar.make(v,"Login is unsuccessful, please try again!", Snackbar.LENGTH_LONG)
+                                        Snackbar.make(v,"Username or password is incorrect!", Snackbar.LENGTH_LONG)
                                                 .setAction("Action", null).show();
                                     else
                                         startActivity(new Intent(LoginActivity.this, MainActivity.class));

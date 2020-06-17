@@ -1,5 +1,6 @@
 package com.arb.movieguideapp.ui.activity;
 
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +30,7 @@ import com.arb.movieguideapp.clients.GetCreditsDataService;
 import com.arb.movieguideapp.clients.GetGenreDataService;
 import com.arb.movieguideapp.clients.GetMovieDataService;
 import com.arb.movieguideapp.clients.GetMovieTrailerService;
+import com.arb.movieguideapp.data.FavoriteDbHelper;
 import com.arb.movieguideapp.listeners.MovieClickListener;
 import com.arb.movieguideapp.listeners.TrailerClickListener;
 import com.arb.movieguideapp.models.Cast;
@@ -43,6 +47,8 @@ import com.arb.movieguideapp.ui.adapters.MovieAdapter;
 import com.arb.movieguideapp.ui.adapters.TrailerAdapter;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
 import com.arb.movieguideapp.models.wrappers.MovieTrailerWrapper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -56,6 +62,11 @@ import retrofit2.Response;
 public class MovieDetailActivity extends AppCompatActivity {
     private TextView txtTitle, txtRating, txtDate, txtDescription, txtTrailer, txtGenre, txtCrew, txtSimilarMovies;
     private ImageView imgPoster, imgCover;
+    private FloatingActionButton favoriteButton;
+
+    private String movieTitle, moviePosterPath, movieDescription, movieBackdropPath, movieReleaseDate;
+    private int movieId;
+    private Double movieVoteAverage;
 
     private TrailerAdapter mTrailerAdapter;
     private CastAdapter mCastAdapter;
@@ -70,7 +81,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private RecyclerView mTrailerRecyclerView, mCastRecycleView, mSimilarMovieRecycleView, mCrewRecycleView;
 
-    private Movie movie;
+    private Movie movie, favorite;
+    private FavoriteDbHelper favoriteDbHelper;
 
     private AlertDialog progressDialog;
 
@@ -88,10 +100,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         getMovieGenres();
 
-//        initRecyclerView(mCastRecycleView, R.id.rv_cast);
-//        initRecyclerView(mCrewRecycleView, R.id.rv_crew);
-//        initRecyclerView(mWTWRecycleView, R.id.rv_where_to_watch);
-
         mCastRecycleView = findViewById(R.id.rv_cast);
         mCastRecycleView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
@@ -106,8 +114,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         mTrailerRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mTrailerRecyclerView.setNestedScrollingEnabled(false);
 
-//        initTextImageView();
-
         txtTitle = findViewById(R.id.detail_movie_title);
         txtRating = findViewById(R.id.detail_movie_ratings);
         txtDate = findViewById(R.id.detail_movie_date);
@@ -118,6 +124,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         txtTrailer = findViewById(R.id.detail_trailer);
         txtCrew = findViewById(R.id.detail_crew);
         txtSimilarMovies = findViewById(R.id.detail_similar_movies);
+        favoriteButton = findViewById(R.id.addFavorites);
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -126,6 +133,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 movie = (Movie) bundle.getSerializable("movie");
                 if (movie != null) {
                     populateActivity(movie);
+                    getMovie(movie);
                     if(isNetworkAvailable()) {
                         getCasts(movie.getId());
                         getCrew(movie.getId());
@@ -134,64 +142,84 @@ public class MovieDetailActivity extends AppCompatActivity {
                     }
                 }
             }
-        } else {
-            movie = (Movie) savedInstanceState.getSerializable("movie");
-            if (movie != null) {
-                populateActivity(movie);
-                if(isNetworkAvailable()) {
-                    mMovieTrailers = (List<MovieTrailer>) savedInstanceState.getSerializable("movie_trailers");
-                    mCast = (List<Cast>) savedInstanceState.getSerializable("cast");
-                    mCrew = (List<Crew>) savedInstanceState.getSerializable("crew");
-                    mMovie = (List<Movie>) savedInstanceState.getSerializable("movie");
-                    if (mMovieTrailers != null) {
-                        populateCasts(mCast);
-                        populateCrew(mCrew);
-                        populateTrailers(mMovieTrailers);
-                        populateSimilarMovies(mMovie);
-                    }
-                }
-            }
         }
 
-        progressDialog.dismiss();
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
+
+            boolean flag = true;
+            @Override
+            public void onClick(final View view) {
+                ObjectAnimator.ofFloat(favoriteButton, "rotation", 0f, 360f).setDuration(800).start();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        int movie_id = getIntent().getExtras().getInt("id");
+                        if (flag) {
+                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_check_24));
+                            saveFavorite();
+                            Snackbar.make(view, "Added to Favorite", Snackbar.LENGTH_SHORT).show();
+                            flag = false;
+                        } else {
+                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_black_24dp));
+
+
+                            favoriteDbHelper = new FavoriteDbHelper(MovieDetailActivity.this);
+                            favoriteDbHelper.deleteFavorite(movie_id);
+
+                            Snackbar.make(view, "Removed from Favorites", Snackbar.LENGTH_SHORT).show();
+                            flag = true;
+                        }
+                    }
+                }, 400);
+            }
+        });
+//        else {
+//            movie = (Movie) savedInstanceState.getSerializable("movie");
+//            if (movie != null) {
+//                populateActivity(movie);
+//                if(isNetworkAvailable()) {
+//                    mMovieTrailers = (List<MovieTrailer>) savedInstanceState.getSerializable("movie_trailers");
+//                    mCast = (List<Cast>) savedInstanceState.getSerializable("cast");
+//                    mCrew = (List<Crew>) savedInstanceState.getSerializable("crew");
+//                    mMovie = (List<Movie>) savedInstanceState.getSerializable("movie");
+//                    if (mMovieTrailers != null) {
+//                        populateCasts(mCast);
+//                        populateCrew(mCrew);
+//                        populateTrailers(mMovieTrailers);
+//                        populateSimilarMovies(mMovie);
+//                    }
+//                }
+//            }
+//        }
     }
 
-//    private void initTextImageView() {
-//        initTextView(txtTitle, R.id.detail_movie_title);
-//        initTextView(txtRating, R.id.detail_movie_ratings);
-//        initTextView(txtDate, R.id.detail_movie_date);
-//        initTextView(txtDescription, R.id.detail_movie_description);
-//        initTextView(txtGenre, R.id.detail_genre);
-//        initTextView(txtTrailer, R.id.detail_trailer);
-//        initTextView(txtCrew, R.id.detail_crew);
-//        initTextView(txtSimilarMovies, R.id.detail_similar_movies);
-//
-//        initImageView(imgPoster, R.id.detail_movie_img);
-//        initImageView(imgCover, R.id.detail_movie_cover);
-//    }
-//
-//    private void initTextView(TextView textView, int id) {
-//        textView = findViewById(id);
-//    }
-//
-//    private void initImageView(ImageView imageView, int id) {
-//        imageView = findViewById(id);
-//    }
-
-    private void initRecyclerView(RecyclerView recyclerView, int id) {
-        recyclerView = findViewById(id);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    private void getMovie(Movie mMovie) {
+        movieId = mMovie.getId();
+        movieTitle = mMovie.getTitle();
+        movieVoteAverage = mMovie.getVoteAverage();
+        moviePosterPath = mMovie.getThumbnail();
+        movieDescription = mMovie.getDescription();
+        movieBackdropPath = mMovie.getCoverImg();
+        movieReleaseDate = mMovie.getReleaseDate();
     }
 
     private void populateActivity(Movie mMovie) {
-        Picasso.get().load(mMovie.getThumbnail()).into(imgPoster);
-        Picasso.get().load(mMovie.getCoverImg()).into(imgCover);
-        txtTitle.setText(mMovie.getTitle());
-        txtDescription.setText(mMovie.getDescription());
-        txtDate.setText(mMovie.getReleaseDate());
+        movieId = mMovie.getId();
+        movieTitle = mMovie.getTitle();
+        movieVoteAverage = mMovie.getVoteAverage();
+        moviePosterPath = mMovie.getThumbnail();
+        movieDescription = mMovie.getDescription();
+        movieBackdropPath = mMovie.getCoverImg();
+        movieReleaseDate = mMovie.getReleaseDate();
+
+        Picasso.get().load(moviePosterPath).into(imgPoster);
+        Picasso.get().load(movieBackdropPath).into(imgCover);
+        txtTitle.setText(movieTitle);
+        txtDescription.setText(movieDescription);
+        txtDate.setText(movieReleaseDate);
 
         List<String> genreString = new ArrayList<>();
-        Log.v("Tag", "Genres: " + mMovie.getGenre());
         if (mMovie.getGenre() != null)  {
             for (Genre genre : movie.getGenres()) {
                 genreString.add(genre.getGenres());
@@ -199,13 +227,24 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
         txtGenre.setText(genreString.toString());
 
-        String userRatingText = mMovie.getVoteAverage() + "/10";
+        String userRatingText = movieVoteAverage + "/10";
         txtRating.setText(userRatingText);
     }
 
-//    private String getGenres(List<String> genreString) {
-//        return TextUtils.join(" ‧ ", genreString);
-//    }
+    private void saveFavorite() {
+        favoriteDbHelper = new FavoriteDbHelper(MovieDetailActivity.this);
+        favorite = new Movie();
+
+        favorite.setId(movieId);
+        favorite.setTitle(movieTitle);
+        favorite.setVoteAverage(movieVoteAverage);
+        favorite.setThumbnail(moviePosterPath);
+        favorite.setDescription(movieDescription);
+        favorite.setCoverImg(movieBackdropPath);
+        favorite.setReleaseDate(movieReleaseDate);
+
+        favoriteDbHelper.addFavorite(favorite);
+    }
 
     private void populateCasts(List<Cast> mCast){
         if (mCast.size() > 0) {
@@ -224,6 +263,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     mCast = response.body().getCast();
                     populateCasts(mCast);
+
+                    progressDialog.dismiss();
                 }
             }
 
@@ -253,6 +294,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     mCrew = response.body().getCrew();
                     populateCrew(mCrew);
+
+                    progressDialog.dismiss();
                 }
             }
 
@@ -272,8 +315,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                 public void onResponse(Call<GenreWrapper> call, Response<GenreWrapper> response) {
                     if (response.body() != null) {
                         genreList = response.body().getGenre();
-                    } else
+                    } else {
                         showError();
+                    }
+                    progressDialog.dismiss();
                 }
 
                 @Override
@@ -314,12 +359,14 @@ public class MovieDetailActivity extends AppCompatActivity {
                             m.mapGenres(genreList);
 
                         populateSimilarMovies(movieList);
+
+                        progressDialog.dismiss();
                     } else {
                         progressDialog.dismiss();
                         showError();
                     }
 
-                    mMovieAdapter.notifyDataSetChanged();
+                    mMovieAdapter.notifyDataSetChanged(); //errori
                 }
 
                 @Override
@@ -374,6 +421,8 @@ public class MovieDetailActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     mMovieTrailers = response.body().getTrailerResult();
                     populateTrailers(mMovieTrailers);
+
+                    progressDialog.dismiss();
                 }
             }
 

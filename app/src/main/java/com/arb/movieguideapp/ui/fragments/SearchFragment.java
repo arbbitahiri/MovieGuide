@@ -125,7 +125,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
                 if (response.body() != null) {
                     List<Movie> movieList = response.body().getMovies();
-                    Log.v("Tag", "Numri i filmave: " + movieList.size());
                     populateMovies(movieList);
 
                     for (Movie m : movieList)
@@ -144,14 +143,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             }
         });
     }
-
-//    private void getFragment(String categoryName) {
-//        getChildFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.searchLayout, new MovieGenreFragment(categoryName))
-//                .addToBackStack(null)
-//                .commit();
-//    }
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
