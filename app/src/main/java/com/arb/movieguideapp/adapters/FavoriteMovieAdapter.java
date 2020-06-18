@@ -76,10 +76,14 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         public void bind(final Movie movie, final MovieClickListener movieClickListener) {
             txtTitle.setText(movie.getTitle());
             txtReleaseDate.setText(movie.getReleaseDate());
+
             String userRatingText = movie.getVoteAverage() + "/10";
             txtRatings.setText(userRatingText);
+
+            String poster = "https://image.tmdb.org/t/p/w342" + movie.getThumbnail();
+
             Picasso.get()
-                    .load(movie.getThumbnailSQL())
+                    .load(poster)
                     .placeholder(R.drawable.ic_baseline_blur_on_24)
                     .error(R.drawable.ic_broken_image_black_24dp)
                     .into(imgMovie);

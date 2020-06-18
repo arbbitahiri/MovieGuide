@@ -99,8 +99,6 @@ public class HomeFragment extends Fragment {
         initRecycleView(recyclerView);
 
         getMovie(recyclerView, call);
-
-        progressDialog.dismiss();
     }
 
     private void initViews(@NonNull View view, ViewPager viewPager, TabLayout tabIndicator, Call<SlideWrapper> call){
@@ -124,19 +122,24 @@ public class HomeFragment extends Fragment {
                 public void onResponse(Call<GenreWrapper> call, Response<GenreWrapper> response) {
                     if (response.body() != null) {
                         genreList = response.body().getGenre();
-                    } else
+                    } else {
                         showError();
+                    }
+
+                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<GenreWrapper> call, Throwable t) {
-                    Log.d("Error ", t.getMessage());
+                    progressDialog.dismiss();
+                    Log.v("TAG", t.getMessage());
                     showError();
                 }
             });
         }
         catch (Exception e) {
-            Log.d("Error ", e.getMessage());
+            progressDialog.dismiss();
+            Log.v("TAG", e.getMessage());
             showError();
         }
     }
@@ -157,24 +160,24 @@ public class HomeFragment extends Fragment {
                         recyclerView.setAdapter(movieAdapter);
                         recyclerView.smoothScrollToPosition(0);
                     } else {
-                        progressDialog.dismiss();
                         showError();
                     }
 
+                    progressDialog.dismiss();
                     movieAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onFailure(Call<MovieWrapper> call, Throwable t) {
                     progressDialog.dismiss();
-                    Log.d("Error ", t.getMessage());
+                    Log.v("TAG", t.getMessage());
                     showError();
                 }
             });
         }
         catch (Exception e) {
             progressDialog.dismiss();
-            Log.d("Error ", e.getMessage());
+            Log.v("TAG", e.getMessage());
             showError();
         }
     }
@@ -210,19 +213,21 @@ public class HomeFragment extends Fragment {
                         showError();
                     }
 
+                    progressDialog.dismiss();
                     tabIndicator.setupWithViewPager(viewPager,true);
                 }
 
                 @Override
                 public void onFailure(Call<SlideWrapper> call, Throwable t) {
-                    Log.d("Error ", t.getMessage());
+                    progressDialog.dismiss();
+                    Log.v("TAG", t.getMessage());
                     showError();
                 }
             });
         }
         catch (Exception e) {
             progressDialog.dismiss();
-            Log.d("Error ", e.getMessage());
+            Log.v("TAG", e.getMessage());
             showError();
         }
     }

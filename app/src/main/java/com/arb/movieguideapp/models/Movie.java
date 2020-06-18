@@ -93,14 +93,14 @@ public class Movie implements Serializable {
         this.releaseDate = releaseDate;
     }
 
-    public String getThumbnail() { return "https://image.tmdb.org/t/p/w342" + thumbnail; }
+    public String getThumbnail() { return thumbnail; }
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }
 
     public String getCoverImg() {
-        return "https://image.tmdb.org/t/p/w1280" + coverImg;
+        return coverImg;
     }
 
     public void setCoverImg(String coverImg) {
@@ -114,20 +114,20 @@ public class Movie implements Serializable {
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
-
-    public String getThumbnailSQL() { return thumbnail; }
-
-    public void setThumbnailSQL(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public String getCoverImgSQL() {
-        return coverImg;
-    }
-
-    public void setCoverImgSQL(String coverImg) {
-        this.coverImg = coverImg;
-    }
+//
+//    public String getThumbnailSQL() { return thumbnail; }
+//
+//    public void setThumbnailSQL(String thumbnail) {
+//        this.thumbnail = thumbnail;
+//    }
+//
+//    public String getCoverImgSQL() {
+//        return coverImg;
+//    }
+//
+//    public void setCoverImgSQL(String coverImg) {
+//        this.coverImg = coverImg;
+//    }
 
     public void mapGenres(List<Genre> genreList) {
         if (this.genres == null)

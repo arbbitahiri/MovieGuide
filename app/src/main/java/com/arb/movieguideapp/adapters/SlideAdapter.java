@@ -35,7 +35,7 @@ public class SlideAdapter extends PagerAdapter {
 
         ImageView imgSlide = slideLayout.findViewById(R.id.slide_img);
         TextView txtSlide = slideLayout.findViewById(R.id.slide_title);
-        TextView txtRatings = slideLayout.findViewById(R.id.slide_rating);
+        TextView txtGenre = slideLayout.findViewById(R.id.slide_rating);
 
         Slide slide = mSlide.get(position);
 
@@ -44,15 +44,19 @@ public class SlideAdapter extends PagerAdapter {
                 .placeholder(R.drawable.ic_baseline_blur_on_24)
                 .error(R.drawable.ic_broken_image_black_24dp)
                 .into(imgSlide);
+
         txtSlide.setText(mSlide.get(position).getTitle());
+
         List<String> genreString = new ArrayList<>();
-        Log.v("Tag", "Genres: " + slide.getGenre());
         if (slide.getGenre() != null)  {
             for (Genre genre : slide.getGenres()) {
                 genreString.add(genre.getGenres());
             }
         }
-        txtRatings.setText(genreString.toString());
+        String genreRe = genreString.toString().replace("[", "");
+        genreRe = genreRe.replace("]", "");
+        genreRe = genreRe.replace(",", " ‧ ");
+        txtGenre.setText(genreRe);
 
         container.addView(slideLayout);
         return slideLayout;

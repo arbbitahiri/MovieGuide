@@ -58,7 +58,7 @@ public class Slide implements Serializable {
     }
 
     public String getThumbnail() {
-        return "https://image.tmdb.org/t/p/w780" + thumbnail;
+        return "https://image.tmdb.org/t/p/w1280" + thumbnail;
     }
 
     public void setThumbnail(String thumbnail) {

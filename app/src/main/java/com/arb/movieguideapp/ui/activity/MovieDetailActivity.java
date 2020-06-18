@@ -196,8 +196,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieBackdropPath = mMovie.getCoverImg();
         movieReleaseDate = mMovie.getReleaseDate();
 
-        Picasso.get().load(moviePosterPath).into(imgPoster);
-        Picasso.get().load(movieBackdropPath).into(imgCover);
+        String poster = "https://image.tmdb.org/t/p/w342" + moviePosterPath;
+        String cover = "https://image.tmdb.org/t/p/w1280" + movieBackdropPath;
+
+        Picasso.get().load(poster).into(imgPoster);
+        Picasso.get().load(cover).into(imgCover);
         txtTitle.setText(movieTitle);
         txtDescription.setText(movieDescription);
         txtDate.setText(movieReleaseDate);
@@ -208,7 +211,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                 genreString.add(genre.getGenres());
             }
         }
-        txtGenre.setText(genreString.toString());
+        String genreRe = genreString.toString().replace("[", "");
+        genreRe = genreRe.replace("]", "");
+        genreRe = genreRe.replace(",", " ‧ ");
+        txtGenre.setText(genreRe);
 
         String userRatingText = movieVoteAverage + "/10";
         txtRating.setText(userRatingText);
@@ -218,12 +224,15 @@ public class MovieDetailActivity extends AppCompatActivity {
         favoriteDbHelper = new FavoriteDbHelper(MovieDetailActivity.this);
         favorite = new Movie();
 
+        String posterPath = moviePosterPath.replace("https://image.tmdb.org/t/p/w342", "");
+        String backdropPath = movieBackdropPath.replace("https://image.tmdb.org/t/p/w1280", "");
+
         favorite.setId(movieId);
         favorite.setTitle(movieTitle);
         favorite.setVoteAverage(movieVoteAverage);
-        favorite.setThumbnailSQL(moviePosterPath);
+        favorite.setThumbnail(posterPath);
         favorite.setDescription(movieDescription);
-        favorite.setCoverImgSQL(movieBackdropPath);
+        favorite.setCoverImg(backdropPath);
         favorite.setReleaseDate(movieReleaseDate);
 
         favoriteDbHelper.addFavorite(favorite);

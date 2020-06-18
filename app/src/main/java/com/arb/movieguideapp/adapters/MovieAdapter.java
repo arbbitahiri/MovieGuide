@@ -58,8 +58,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         }
 
         public void bind(final Movie movie, final MovieClickListener movieClickListener) {
+            String poster = "https://image.tmdb.org/t/p/w342" + movie.getThumbnail();
+
             Picasso.get()
-                    .load(movie.getThumbnail())
+                    .load(poster)
                     .placeholder(R.drawable.ic_baseline_blur_on_24)
                     .error(R.drawable.ic_broken_image_black_24dp)
                     .into(imgPoster);
