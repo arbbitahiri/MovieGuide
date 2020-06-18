@@ -1,8 +1,10 @@
 package com.arb.movieguideapp.ui.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +51,7 @@ public class ChangePasswordFragment extends Fragment {
         cvChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibratePhoneOnClick(getContext(), (short) 100);
                 String newPass = newPassword.getText().toString();
                 String confPass = confirmPassword.getText().toString();
 
@@ -88,6 +91,11 @@ public class ChangePasswordFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void vibratePhoneOnClick(Context context, short vibrateMilliSeconds) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(vibrateMilliSeconds);
     }
 
     private void finishActivity() {

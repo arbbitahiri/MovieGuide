@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,6 +105,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         movieAdapter = new SearchMovieAdapter(movieList, new MovieClickListener() {
             @Override
             public void onMovieClick(Movie movie) {
+                vibratePhoneOnClick(getContext(), (short) 50);
                 Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movie", movie);
@@ -166,5 +168,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    private void vibratePhoneOnClick(Context context, short vibrateMilliSeconds) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(vibrateMilliSeconds);
     }
 }

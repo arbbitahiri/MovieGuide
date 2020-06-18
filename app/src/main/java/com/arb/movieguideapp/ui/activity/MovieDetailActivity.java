@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -151,6 +152,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
+                vibratePhoneOnClick((short) 50);
                 ObjectAnimator.ofFloat(favoriteButton, "rotation", 0f, 360f).setDuration(800).start();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -348,8 +350,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         showError();
                     }
-//
-//                    mMovieAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -368,9 +368,11 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void onClickMovie(List<Movie> movieList) {
+        final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mMovieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
             @Override
             public void onMovieClick(Movie movie) {
+                vibratePhoneOnClick((short) 50);
                 Intent intent = new Intent(MovieDetailActivity.this, MovieDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movie", movie);
@@ -387,6 +389,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             mTrailerAdapter = new TrailerAdapter(mMovieTrailers, new TrailerClickListener() {
                 @Override
                 public void onMovieTrailerClick(MovieTrailer mMovieTrailer) {
+                    vibratePhoneOnClick((short) 100);
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + mMovieTrailer.getKey())));
                 }
             });
@@ -432,6 +435,11 @@ public class MovieDetailActivity extends AppCompatActivity {
             outState.putSerializable("crew", (Serializable) mCrew);
             outState.putSerializable("movie_trailers", (Serializable) mMovieTrailers);
         }
+    }
+
+    private void vibratePhoneOnClick(short vibrateMilliSeconds) {
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(vibrateMilliSeconds);
     }
 
     private void showError() {

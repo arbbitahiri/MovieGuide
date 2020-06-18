@@ -135,6 +135,7 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + FavoriteContract.FavoriteEntry.TABLE_NAME +
                 " WHERE " + FavoriteContract.FavoriteEntry.COLUMN_TITLE + " LIKE '" + searchMovie + "%'";
         Log.v("LIST", selectQuery);
+
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
@@ -158,4 +159,3 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
         return favoriteList;
     }
 }
-//TODO krijo metod per cursor

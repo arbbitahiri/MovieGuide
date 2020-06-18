@@ -1,7 +1,9 @@
 package com.arb.movieguideapp.ui.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +86,7 @@ public class FavoriteFragment extends Fragment implements SearchView.OnQueryText
         favoriteMovieAdapter = new FavoriteMovieAdapter(movies, new MovieClickListener() {
             @Override
             public void onMovieClick(Movie movie) {
+                vibratePhoneOnClick(getContext(), (short) 50);
                 Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movie", movie);
@@ -113,6 +116,11 @@ public class FavoriteFragment extends Fragment implements SearchView.OnQueryText
             Log.d("TAG", movie.getTitle());
         }
         populateMovies(movieList);
+    }
+
+    private void vibratePhoneOnClick(Context context, short vibrateMilliSeconds) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(vibrateMilliSeconds);
     }
 
     @Override

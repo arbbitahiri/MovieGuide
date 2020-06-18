@@ -180,11 +180,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void onClickMovie(List<Movie> movieList) {
-        final Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
         movieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
             @Override
             public void onMovieClick(Movie movie) {
-                vibrator.vibrate(100);
+                vibratePhoneOnClick(getContext(), (short) 50);
                 Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("movie", movie);
@@ -226,6 +225,11 @@ public class HomeFragment extends Fragment {
             Log.d("Error ", e.getMessage());
             showError();
         }
+    }
+
+    private void vibratePhoneOnClick(Context context, short vibrateMilliSeconds) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(vibrateMilliSeconds);
     }
 
     private void showError() {

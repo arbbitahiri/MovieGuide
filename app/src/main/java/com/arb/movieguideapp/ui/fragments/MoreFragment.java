@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,6 +97,7 @@ public class MoreFragment extends Fragment {
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                vibratePhoneOnClick(getContext(), (short) 50);
                 if (b) {
                     Log.v("TAG", "Checked");
                     String title = "Movie Guide Notification";
@@ -123,6 +125,7 @@ public class MoreFragment extends Fragment {
         txtChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibratePhoneOnClick(getContext(), (short) 50);
                 getFragment(new ChangePasswordFragment());
             }
         });
@@ -130,6 +133,7 @@ public class MoreFragment extends Fragment {
         txtDeactivateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibratePhoneOnClick(getContext(), (short) 100);
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     final AlertDialog.Builder deactivateDialog = new AlertDialog.Builder(v.getContext());
@@ -175,6 +179,7 @@ public class MoreFragment extends Fragment {
         txtSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibratePhoneOnClick(getContext(), (short) 100);
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
@@ -189,22 +194,14 @@ public class MoreFragment extends Fragment {
                 .commit();
     }
 
-    private void swapFragment(Fragment fragment){
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.more_fragment, fragment)
-//                .addToBackStack(null)
-                .commit();
-//        getChildFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.more_fragment, fragment)
-//                .addToBackStack(null)
-//                .commit();
-    }
-
     private void finishActivity() {
         if(getActivity() != null) {
             getActivity().finish();
         }
+    }
+
+    private void vibratePhoneOnClick(Context context, short vibrateMilliSeconds) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(vibrateMilliSeconds);
     }
 }
