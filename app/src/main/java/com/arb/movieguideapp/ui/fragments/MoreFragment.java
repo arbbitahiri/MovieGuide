@@ -108,6 +108,8 @@ public class MoreFragment extends Fragment {
                             .setColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark))
                             .setContentTitle(title)
                             .setContentText(message)
+                            .setVibrate(new long[] {1000, 1000, 1000, 1000, 1000})
+                            .setLights(Color.BLUE, 3000, 3000)
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
                     Intent intent = new Intent(getContext(), MainActivity.class);
