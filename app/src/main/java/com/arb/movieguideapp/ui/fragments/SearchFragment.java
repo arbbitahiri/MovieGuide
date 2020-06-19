@@ -2,11 +2,8 @@ package com.arb.movieguideapp.ui.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,9 +23,8 @@ import com.arb.movieguideapp.clients.GetMovieDataService;
 import com.arb.movieguideapp.listeners.MovieClickListener;
 import com.arb.movieguideapp.models.Genre;
 import com.arb.movieguideapp.models.Movie;
-import com.arb.movieguideapp.models.wrappers.GenreWrapper;
-import com.arb.movieguideapp.models.wrappers.MovieWrapper;
-import com.arb.movieguideapp.ui.PageViewModel;
+import com.arb.movieguideapp.wrappers.GenreWrapper;
+import com.arb.movieguideapp.wrappers.MovieWrapper;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
 import com.arb.movieguideapp.adapters.SearchMovieAdapter;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
@@ -47,16 +41,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private RecyclerView searchRecyclerView;
     private SearchMovieAdapter movieAdapter;
     private List<Genre> genreList = new ArrayList<>();
-    private PageViewModel pageViewModel;
 
     private SearchView searchView;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        pageViewModel = new ViewModelProvider(getActivity()).get(PageViewModel.class);
-    }
 
     @Nullable
     @Override
@@ -69,10 +55,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // Inflate the layout for this fragment
-        setRetainInstance(true);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        getMovies();
     }
 
     private void getMovieGenres() {
@@ -84,19 +70,18 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 public void onResponse(Call<GenreWrapper> call, Response<GenreWrapper> response) {
                     if (response.body() != null) {
                         genreList = response.body().getGenre();
-                    } else
+                    } else {
                         showError();
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<GenreWrapper> call, Throwable t) {
-                    Log.d("Error ", t.getMessage());
                     showError();
                 }
             });
         }
         catch (Exception e) {
-            Log.d("Error ", e.getMessage());
             showError();
         }
     }
@@ -119,40 +104,46 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         searchRecyclerView = getActivity().findViewById(R.id.movie_search_recycler);
         searchRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         getMovieGenres();
+
         String input_movie = searchView.getQuery().toString();
+
         GetMovieDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetMovieDataService.class);
-        Call<MovieWrapper> call = service.getMovie(input_movie);
+        Call<MovieWrapper> callMovieSearch = service.getMovie(input_movie);
+        Call<MovieWrapper> callUpcomingMovies = service.getUpcoming();
 
-        call.enqueue(new Callback<MovieWrapper>() {
-            @Override
-            public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
-                if (response.body() != null) {
-                    List<Movie> movieList = response.body().getMovies();
-                    populateMovies(movieList);
-
-                    for (Movie m : movieList)
-                        m.mapGenres(genreList);
-
-                    searchRecyclerView.setAdapter(movieAdapter);
-                    searchRecyclerView.smoothScrollToPosition(0);
-                }
-
-                movieAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<MovieWrapper> call, Throwable t) {
-                showError();
-            }
-        });
+        getMovie(searchRecyclerView, callMovieSearch);
+        getMovie(searchRecyclerView, callUpcomingMovies);
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    private void getMovie(final RecyclerView recyclerView, Call<MovieWrapper> call) {
+        try {
+            call.enqueue(new Callback<MovieWrapper>() {
+                @Override
+                public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
+                    if (response.body() != null) {
+                        List<Movie> movieList = response.body().getMovies();
+
+                        for (Movie m : movieList)
+                            m.mapGenres(genreList);
+
+                        populateMovies(movieList);
+
+                        recyclerView.setAdapter(movieAdapter);
+                        recyclerView.smoothScrollToPosition(0);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MovieWrapper> call, Throwable t) {
+                    showError();
+                }
+            });
+        }
+        catch (Exception e) {
+            showError();
+        }
     }
 
     private void showError() {

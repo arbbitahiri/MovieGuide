@@ -10,7 +10,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,8 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.arb.movieguideapp.clients.GetGenreDataService;
 import com.arb.movieguideapp.models.Genre;
-import com.arb.movieguideapp.models.wrappers.GenreWrapper;
-import com.arb.movieguideapp.ui.PageViewModel;
+import com.arb.movieguideapp.wrappers.GenreWrapper;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.adapters.MovieAdapter;
@@ -36,10 +33,10 @@ import com.arb.movieguideapp.adapters.SlideAdapter;
 import com.arb.movieguideapp.clients.GetMovieDataService;
 import com.arb.movieguideapp.listeners.MovieClickListener;
 import com.arb.movieguideapp.models.Movie;
-import com.arb.movieguideapp.models.wrappers.MovieWrapper;
+import com.arb.movieguideapp.wrappers.MovieWrapper;
 import com.arb.movieguideapp.models.Slide;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
-import com.arb.movieguideapp.models.wrappers.SlideWrapper;
+import com.arb.movieguideapp.wrappers.SlideWrapper;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -59,15 +56,6 @@ public class HomeFragment extends Fragment {
 
     private AlertDialog progressDialog;
 
-    private PageViewModel pageViewModel;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        pageViewModel = new ViewModelProvider(getActivity()).get(PageViewModel.class);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,6 +65,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading...");
         progressDialog.show();
@@ -91,6 +80,8 @@ public class HomeFragment extends Fragment {
         initViews(view, rvNowPlaying, R.id.rv_now_playing, service.getNowPlaying());
         initViews(view, rvTopRated, R.id.rv_top_rated, service.getTopRated());
         initViews(view, rvUpcoming, R.id.rv_upcoming, service.getUpcoming());
+
+        progressDialog.dismiss();
     }
 
     private void initViews(@NonNull View view, RecyclerView recyclerView, int recycle, Call<MovieWrapper> call){
@@ -125,21 +116,15 @@ public class HomeFragment extends Fragment {
                     } else {
                         showError();
                     }
-
-                    progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Call<GenreWrapper> call, Throwable t) {
-                    progressDialog.dismiss();
-                    Log.v("TAG", t.getMessage());
                     showError();
                 }
             });
         }
         catch (Exception e) {
-            progressDialog.dismiss();
-            Log.v("TAG", e.getMessage());
             showError();
         }
     }
@@ -162,22 +147,18 @@ public class HomeFragment extends Fragment {
                     } else {
                         showError();
                     }
-
-                    progressDialog.dismiss();
                     movieAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onFailure(Call<MovieWrapper> call, Throwable t) {
                     progressDialog.dismiss();
-                    Log.v("TAG", t.getMessage());
                     showError();
                 }
             });
         }
         catch (Exception e) {
             progressDialog.dismiss();
-            Log.v("TAG", e.getMessage());
             showError();
         }
     }
@@ -212,22 +193,16 @@ public class HomeFragment extends Fragment {
                     } else {
                         showError();
                     }
-
-                    progressDialog.dismiss();
                     tabIndicator.setupWithViewPager(viewPager,true);
                 }
 
                 @Override
                 public void onFailure(Call<SlideWrapper> call, Throwable t) {
-                    progressDialog.dismiss();
-                    Log.v("TAG", t.getMessage());
                     showError();
                 }
             });
         }
         catch (Exception e) {
-            progressDialog.dismiss();
-            Log.v("TAG", e.getMessage());
             showError();
         }
     }

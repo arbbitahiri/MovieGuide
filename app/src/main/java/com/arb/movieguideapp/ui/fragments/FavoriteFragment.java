@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.arb.movieguideapp.R;
 import com.arb.movieguideapp.data.FavoriteDbHelper;
 import com.arb.movieguideapp.listeners.MovieClickListener;
-import com.arb.movieguideapp.ui.PageViewModel;
 import com.arb.movieguideapp.ui.activity.MovieDetailActivity;
 import com.arb.movieguideapp.adapters.FavoriteMovieAdapter;
 import com.arb.movieguideapp.models.Movie;
@@ -38,15 +35,6 @@ public class FavoriteFragment extends Fragment implements SearchView.OnQueryText
     private FavoriteDbHelper favoriteDbHelper;
 
     private SearchView searchView;
-
-    private PageViewModel pageViewModel;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        pageViewModel = new ViewModelProvider(getActivity()).get(PageViewModel.class);
-    }
 
     @Nullable
     @Override
@@ -101,9 +89,7 @@ public class FavoriteFragment extends Fragment implements SearchView.OnQueryText
 
         favoriteDbHelper = new FavoriteDbHelper(getContext());
         movieList = favoriteDbHelper.getFavoriteMovies();
-        for (Movie movie : movieList) {
-            Log.d("TAG", movie.getTitle());
-        }
+
         populateMovies(movieList);
     }
 
@@ -112,9 +98,7 @@ public class FavoriteFragment extends Fragment implements SearchView.OnQueryText
 
         favoriteDbHelper = new FavoriteDbHelper(getContext());
         movieList = favoriteDbHelper.searchMovies(searchMovie);
-        for (Movie movie : movieList) {
-            Log.d("TAG", movie.getTitle());
-        }
+
         populateMovies(movieList);
     }
 

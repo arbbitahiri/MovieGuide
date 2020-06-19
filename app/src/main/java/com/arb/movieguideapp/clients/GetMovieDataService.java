@@ -1,8 +1,7 @@
 package com.arb.movieguideapp.clients;
 
-import com.arb.movieguideapp.models.Movie;
-import com.arb.movieguideapp.models.wrappers.MovieWrapper;
-import com.arb.movieguideapp.models.wrappers.SlideWrapper;
+import com.arb.movieguideapp.wrappers.MovieWrapper;
+import com.arb.movieguideapp.wrappers.SlideWrapper;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

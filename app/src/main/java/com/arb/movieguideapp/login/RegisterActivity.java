@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
         name = findViewById(R.id.txtName);
         email = findViewById(R.id.txtReEmail);
         password = findViewById(R.id.txtRePassword);
-        confirmPassword = findViewById(R.id.txtChangePassword);
+        confirmPassword = findViewById(R.id.txtChangePass);
         cvRegister = findViewById(R.id.cv_register);
         txtLogin = findViewById(R.id.txtLoginHere);
 

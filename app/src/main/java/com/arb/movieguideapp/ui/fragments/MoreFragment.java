@@ -22,15 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.arb.movieguideapp.login.LoginActivity;
 import com.arb.movieguideapp.R;
-import com.arb.movieguideapp.ui.PageViewModel;
 import com.arb.movieguideapp.ui.activity.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,7 +40,7 @@ public class MoreFragment extends Fragment {
     private TextView txtSignOut, txtVerify, txtChangePassword, txtDeactivateAccount;
     private Switch notificationSwitch;
 
-    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private ProgressDialog progressDialog;
 
@@ -62,14 +58,13 @@ public class MoreFragment extends Fragment {
         txtSignOut = view.findViewById(R.id.txt_sign_out);
         txtVerify = view.findViewById(R.id.txtVerify);
         txtChangePassword = view.findViewById(R.id.txt_update_password);
-        txtDeactivateAccount = view.findViewById(R.id.txt_cancel_account);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Fetching data!");
         progressDialog.show();
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        user = mFirebaseAuth.getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
 
         if (user != null){
             if (!user.isEmailVerified()) {
@@ -90,6 +85,8 @@ public class MoreFragment extends Fragment {
                         });
                     }
                 });
+            } else {
+                txtVerify.setVisibility(View.GONE);
             }
             progressDialog.dismiss();
         }
@@ -131,52 +128,52 @@ public class MoreFragment extends Fragment {
                 getFragment(new ChangePasswordFragment());
             }
         });
-
-        txtDeactivateAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vibratePhoneOnClick(getContext(), (short) 100);
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    final AlertDialog.Builder deactivateDialog = new AlertDialog.Builder(v.getContext());
-                    deactivateDialog.setTitle("Deactivate Account");
-                    deactivateDialog.setMessage("Are you sure you want to deactivate your account?");
-
-                    deactivateDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            progressDialog.setMessage("Deactivating, please wait...");
-                            progressDialog.show();
-
-                            user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (!task.isSuccessful()) {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(getActivity(), "Account deactivated", Toast.LENGTH_SHORT).show();
-
-                                        finishActivity();
-                                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                                    }
-                                    else {
-                                        progressDialog.dismiss();
-                                        Toast.makeText(getActivity(), "Account could not be deactivated", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        }
-                    });
-                    deactivateDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finishActivity();
-                        }
-                    });
-
-                    deactivateDialog.create().show();
-                }
-            }
-        });
+//
+//        txtDeactivateAccount.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                vibratePhoneOnClick(getContext(), (short) 100);
+//                user = FirebaseAuth.getInstance().getCurrentUser();
+//                if (user != null) {
+//                    final AlertDialog.Builder deactivateDialog = new AlertDialog.Builder(v.getContext());
+//                    deactivateDialog.setTitle("Deactivate Account");
+//                    deactivateDialog.setMessage("Are you sure you want to deactivate your account?");
+//
+//                    deactivateDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            progressDialog.setMessage("Deactivating, please wait...");
+//                            progressDialog.show();
+//
+//                            user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (!task.isSuccessful()) {
+//                                        progressDialog.dismiss();
+//                                        Toast.makeText(getActivity(), "Account deactivated", Toast.LENGTH_SHORT).show();
+//
+//                                        finishActivity();
+//                                        startActivity(new Intent(getActivity(), LoginActivity.class));
+//                                    }
+//                                    else {
+//                                        progressDialog.dismiss();
+//                                        Toast.makeText(getActivity(), "Account could not be deactivated", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                }
+//                            });
+//                        }
+//                    });
+//                    deactivateDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            finishActivity();
+//                        }
+//                    });
+//
+//                    deactivateDialog.create().show();
+//                }
+//            }
+//        });
 
         txtSignOut.setOnClickListener(new View.OnClickListener() {
             @Override

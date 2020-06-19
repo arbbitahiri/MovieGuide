@@ -2,7 +2,6 @@ package com.arb.movieguideapp.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.arb.movieguideapp.R;
-import com.arb.movieguideapp.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,8 +42,8 @@ public class ChangePasswordFragment extends Fragment {
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         newPassword = view.findViewById(R.id.txtPassword);
-        confirmPassword = view.findViewById(R.id.txtChangePassword);
-        cvChangePassword = view.findViewById(R.id.cv_send_feedback);
+        confirmPassword = view.findViewById(R.id.txtChangePass);
+        cvChangePassword = view.findViewById(R.id.cv_change_password);
         dialog = new ProgressDialog(getActivity());
 
         cvChangePassword.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +67,7 @@ public class ChangePasswordFragment extends Fragment {
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            if (!task.isSuccessful()) {
+                                            if (task.isSuccessful()) {
                                                 dialog.dismiss();
                                                 Toast.makeText(getActivity(),
                                                         "Your password has been changed", Toast.LENGTH_SHORT).show();
@@ -92,6 +90,8 @@ public class ChangePasswordFragment extends Fragment {
             }
         });
     }
+
+    //TODO check
 
     private void vibratePhoneOnClick(Context context, short vibrateMilliSeconds) {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);

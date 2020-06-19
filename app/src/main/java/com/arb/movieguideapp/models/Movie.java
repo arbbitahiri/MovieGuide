@@ -1,6 +1,5 @@
 package com.arb.movieguideapp.models;
 
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -114,20 +113,6 @@ public class Movie implements Serializable {
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
     }
-//
-//    public String getThumbnailSQL() { return thumbnail; }
-//
-//    public void setThumbnailSQL(String thumbnail) {
-//        this.thumbnail = thumbnail;
-//    }
-//
-//    public String getCoverImgSQL() {
-//        return coverImg;
-//    }
-//
-//    public void setCoverImgSQL(String coverImg) {
-//        this.coverImg = coverImg;
-//    }
 
     public void mapGenres(List<Genre> genreList) {
         if (this.genres == null)
@@ -139,10 +124,5 @@ public class Movie implements Serializable {
                     this.genres.add(c);
             }
         }
-    }
-
-    public void getGenresString() {
-        Gson gson = new Gson();
-        String inputString = gson.toJson(genre);
     }
 }

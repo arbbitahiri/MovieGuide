@@ -1,4 +1,4 @@
-package com.arb.movieguideapp.models.wrappers;
+package com.arb.movieguideapp.wrappers;
 
 import com.arb.movieguideapp.models.Genre;
 import com.google.gson.annotations.SerializedName;

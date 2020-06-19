@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class MovieTrailer implements Serializable {
+
     @SerializedName("id")
     private String id;
     @SerializedName("iso_639_1")

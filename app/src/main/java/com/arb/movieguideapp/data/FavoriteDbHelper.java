@@ -45,7 +45,7 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
             FavoriteContract.FavoriteEntry.COLUMN_POSTER_PATH + " TEXT NOT NULL, " +
             FavoriteContract.FavoriteEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
             FavoriteContract.FavoriteEntry.COLUMN_BACKDROP_PATH + " TEXT NOT NULL, " +
-            FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL" + "); ";
+            FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL " + "); ";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -90,22 +90,8 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()) {
-            do {
-                Movie movie = new Movie();
-                movie.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_MOVIE_ID))));
-                movie.setTitle(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_TITLE)));
-                movie.setVoteAverage(Double.parseDouble(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_VOTE_AVERAGE))));
-                movie.setThumbnail(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_POSTER_PATH)));
-                movie.setDescription(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_DESCRIPTION)));
-                movie.setCoverImg(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_BACKDROP_PATH)));
-                movie.setReleaseDate(cursor.getString(cursor.getColumnIndex(FavoriteContract.FavoriteEntry.COLUMN_RELEASE_DATE)));
+        initCursor(cursor, favoriteList);
 
-                favoriteList.add(movie);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
         db.close();
 
         return favoriteList;
@@ -138,6 +124,14 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 
+        initCursor(cursor, favoriteList);
+
+        db.close();
+
+        return favoriteList;
+    }
+
+    private void initCursor(Cursor cursor, List<Movie> favoriteList) {
         if (cursor.moveToFirst()) {
             do {
                 Movie movie = new Movie();
@@ -154,8 +148,5 @@ public class FavoriteDbHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
-
-        return favoriteList;
     }
 }

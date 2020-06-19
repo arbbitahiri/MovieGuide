@@ -37,15 +37,15 @@ import com.arb.movieguideapp.models.Crew;
 import com.arb.movieguideapp.models.Genre;
 import com.arb.movieguideapp.models.Movie;
 import com.arb.movieguideapp.models.MovieTrailer;
-import com.arb.movieguideapp.models.wrappers.CreditsWrapper;
-import com.arb.movieguideapp.models.wrappers.GenreWrapper;
-import com.arb.movieguideapp.models.wrappers.MovieWrapper;
+import com.arb.movieguideapp.wrappers.CreditsWrapper;
+import com.arb.movieguideapp.wrappers.GenreWrapper;
+import com.arb.movieguideapp.wrappers.MovieWrapper;
 import com.arb.movieguideapp.adapters.CastAdapter;
 import com.arb.movieguideapp.adapters.CrewAdapter;
 import com.arb.movieguideapp.adapters.MovieAdapter;
 import com.arb.movieguideapp.adapters.TrailerAdapter;
 import com.arb.movieguideapp.utils.RetrofitClientInstance;
-import com.arb.movieguideapp.models.wrappers.MovieTrailerWrapper;
+import com.arb.movieguideapp.wrappers.MovieTrailerWrapper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
@@ -75,7 +75,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     private List<MovieTrailer> mMovieTrailers;
     private List<Cast> mCast;
     private List<Crew> mCrew;
-    private List<Movie> mMovie;
     private List<Genre> genreList = new ArrayList<>();
 
     private RecyclerView mTrailerRecyclerView, mCastRecycleView, mSimilarMovieRecycleView, mCrewRecycleView;
@@ -201,6 +200,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         Picasso.get().load(poster).into(imgPoster);
         Picasso.get().load(cover).into(imgCover);
+
         txtTitle.setText(movieTitle);
         txtDescription.setText(movieDescription);
         txtDate.setText(movieReleaseDate);
@@ -377,7 +377,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void onClickMovie(List<Movie> movieList) {
-        final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         mMovieAdapter = new MovieAdapter(movieList, new MovieClickListener() {
             @Override
             public void onMovieClick(Movie movie) {
@@ -439,11 +438,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("movie", movie);
-        if(isNetworkAvailable()) {
-            outState.putSerializable("cast", (Serializable) mCast);
-            outState.putSerializable("crew", (Serializable) mCrew);
-            outState.putSerializable("movie_trailers", (Serializable) mMovieTrailers);
-        }
     }
 
     private void vibratePhoneOnClick(short vibrateMilliSeconds) {
