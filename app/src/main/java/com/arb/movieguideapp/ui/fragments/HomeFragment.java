@@ -45,7 +45,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private List<Genre> genreList = new ArrayList<>();
-    private List<Slide> lstSlides;
+//    private List<Slide> lstSlides;
 
     private RecyclerView rvPopular, rvNowPlaying, rvTopRated, rvUpcoming;
     private ViewPager slidePager;
@@ -66,10 +66,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
         GetMovieDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetMovieDataService.class);
 
         getMovieGenres();
@@ -80,8 +76,6 @@ public class HomeFragment extends Fragment {
         initViews(view, rvNowPlaying, R.id.rv_now_playing, service.getNowPlaying());
         initViews(view, rvTopRated, R.id.rv_top_rated, service.getTopRated());
         initViews(view, rvUpcoming, R.id.rv_upcoming, service.getUpcoming());
-
-        progressDialog.dismiss();
     }
 
     private void initViews(@NonNull View view, RecyclerView recyclerView, int recycle, Call<MovieWrapper> call){
@@ -130,6 +124,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void getMovie(final RecyclerView recyclerView, Call<MovieWrapper> call) {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
         try {
             call.enqueue(new Callback<MovieWrapper>() {
                 @Override
@@ -161,6 +159,7 @@ public class HomeFragment extends Fragment {
             progressDialog.dismiss();
             showError();
         }
+        progressDialog.dismiss();
     }
 
     private void onClickMovie(List<Movie> movieList) {
